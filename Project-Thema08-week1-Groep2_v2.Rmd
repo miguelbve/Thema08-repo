@@ -1,6 +1,6 @@
 ---
-title: "titel "
-author: "my_name"
+title: " Week 1: mRNA dynamic "
+author: "Jurrien de Jong en Miguel Botter van Elburg"
 date: "`r Sys.Date()`"
 
 header-includes:
@@ -19,14 +19,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 Introduction of the research and introduction research questions
+TEXT HERE
 
 ## Goal
   - Describe Goal (not the educational goal but the research goal)
   - Describe how you reach the goal (e.g. make model and figures, use different setting)
   - formulate hypothesis
+TEXT HERE
 
 ## Theory
 
+TEXT HERE
 - Describe biological model
 - Picture of the biological model
 
@@ -40,6 +43,7 @@ $$\frac{\delta R}{\delta t} = -r * R + m $$
 Describe each element and the transformations
 
 # Methods
+TEXT HERE
 
 ## The software model
 
