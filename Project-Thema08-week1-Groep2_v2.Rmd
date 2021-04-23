@@ -3,9 +3,7 @@ title: ' Week 1: mRNA dynamic '
 author: "Jurrien de Jong en Miguel Botter van Elburg"
 date: "`r Sys.Date()`"
 output:
-  pdf_document: default
   html_document:
-    number_sections: yes
 header-includes:
 - \usepackage{longtable}
 - \usepackage{hyperref}
