@@ -50,28 +50,37 @@ knitr::include_graphics("model_reference.png")
 
 https://d2vlcm61l7u1fs.cloudfront.net/media%2Fe7e%2Fe7e23282-c3fd-4367-8a63-a13364e0c120%2FphpSLUnLT.png (netjes in de bibliotheek bibtex).
 
+
 ```{r theory, echo=FALSE}
 #knitr::include_graphics('example.png')
+knitr::include_graphics('model.png')
 ```
+
 Give an explanation of the model with citations of source \cite{Soertaert10} (replace this with actual source)
 and formula explanation
 
 $$\frac{\delta R}{\delta t} = -r * R + m $$
-- R is the number of transcripts
-- r is the rate of decay of existing transcripts
-- m is the number of new transcripts produced per second
 
-Beantwoord de volgende vragen
- 
-    [1] Welke parameters moet je programmeren?
-    [2] Zoek bronnen op internet die uitleggen waar de formule dR/dt = -rR + m vandaan komt.
-    [3] Teken het biologisch model en leg de vertaling naar de formule uit. (komt in het include_graphics)
-    [4] Wat is de return waarde van de model functie in R? Waarom return je die en niet R zelf?
-
+- R is the number of transcripts\n
+- r is the rate of decay of existing transcripts\n
+- m is the number of new transcripts produced per second\n
 
 # Methods
 
-```{r}
+## The software model
+
+Voor dit onderzoek is gebruik gemaakt van package deSolve (v1.28) met bijbehorende functies zoals de functie ode (ordinary differential equation, gewoonlijke differentiaal vergelijking). met de ode functie worden er tijds afhankelijke parameters gebruikt om de differentiele vergelijkingen op te lossen.
+
+De code bevat een functie die per tijdsstip de afgeleide bepaald, dR. Hij heeft daarvoor verschillende parameters nodig zoals, de decay per tijdseenheid en tijdslengte. ODE werkt als een soort loop, hij runt de gemaakte funcite mRNA_func per tijdsstip en returned uiteindelijk de verkregen afgeleide waarden. Dit word op het laatst geplot in een grafiek zodat ook de evenwichtstoestand zichtbaar is.
+
+```{r methods, echo=TRUE}
+# De gebruikte library:
+library(deSolve)
+
+#### De gebruikte code #####################
+
+############################################
+
 parameters <- c(r = 0.1, m = 150) 
 
 # Functie met de volgende parameters:
@@ -103,18 +112,6 @@ plot(out, main = "mRNA model", xlab = "Tijdsstip", ylab = "Aantal transcripten")
 max_value <- max(out)
 abline(h = max_value, col = "red", lty = 2)
 cat("Max Value :", max_value)
-```
-
-
-## The software model
-
-Voor dit onderzoek is gebruik gemaakt van package deSolve (v1.28) met bijbehorende functies zoals de functie ode (ordinary differential equation, gewoonlijke differentiaal vergelijking). met de ode functie worden er tijds afhankelijke parameters gebruikt om de differentiele vergelijkingen op te lossen.
-
-De code bevat een functie die per tijdsstip de afgeleide bepaald, dR. Hij heeft daarvoor verschillende parameters nodig zoals, de decay per tijdseenheid en tijdslengte. ODE werkt als een soort loop, hij runt de gemaakte funcite mRNA_func per tijdsstip en returned uiteindelijk de verkregen afgeleide waarden. Dit word op het laatst geplot in een grafiek zodat ook de evenwichtstoestand zichtbaar is.
-
-```{r methods, echo=TRUE}
-# De gebruikte library:
-library(deSolve)
 ```
 
 De return waarde van de functie mRNA_func geeft per tijdsstip de afgeleide terug ingepakt in een list omdat de functie ode van deSolve een list nodig heeft als input. Wij returnen dit zelf omdat we niet willen dat de ode functie vaker loopt dan nodig is ( want de return geeft all waarden terug, en is een soort van break uit de functie ).
