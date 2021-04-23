@@ -19,23 +19,21 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 # Introduction
-Introduction of the research and introduction research questions
+
 Ons onderzoek zal een dynamisch mRNA synthese model. De onderzoeksvragen zijn;
+
 - Welke parameters moeten er geprogrammeerd worden?
 - Er moeten internet bronnen gevonden worden waar de formule dR/dt = -rR + m vandaan komt.
 - We moeten een biologisch model tekenen en we leggen de formule door middel van een vertaling uit.
 - Achterhalen wat de return waarde van de model functie in R is, daarna deze verder toelichten (waarom we deze returnen en niet R zelf).
 
 ## Goal
-  - Describe Goal (not the educational goal but the research goal)
-  - Describe how you reach the goal (e.g. make model and figures, use different setting)
-  - formulate hypothesis 
+
 Het onderzoeksdoel is om een dynamisch mRNA proces te modelleren door te programmeren en visualiseren in R met behulp van simulaties.
 De onderzoekshypothese luidt; naarmate de r groter wordt (hellingsgetal) zal de uitkomst van de vergelijking dR/dt = -rR + m groter worden (dus dR/dt wordt groter).
 
-TEXT HERE
-
 ## Theory
+
 De tijdelijke dynamica van geactiveerde mRNA transcriptie is beschreven door de code die te vinden is onder Methods.
 
 
@@ -50,7 +48,6 @@ In dit onderzoek worden de parameters R en m geprogrammeerd, omdat deze variabel
 knitr::include_graphics("model_reference.png")
 ```
 
-
 https://d2vlcm61l7u1fs.cloudfront.net/media%2Fe7e%2Fe7e23282-c3fd-4367-8a63-a13364e0c120%2FphpSLUnLT.png (netjes in de bibliotheek bibtex).
 
 ```{r theory, echo=FALSE}
@@ -60,7 +57,9 @@ Give an explanation of the model with citations of source \cite{Soertaert10} (re
 and formula explanation
 
 $$\frac{\delta R}{\delta t} = -r * R + m $$
-Describe each element and the transformations
+- R is the number of transcripts
+- r is the rate of decay of existing transcripts
+- m is the number of new transcripts produced per second
 
 Beantwoord de volgende vragen
  
@@ -106,7 +105,39 @@ abline(h = max_value, col = "red", lty = 2)
 cat("Max Value :", max_value)
 ```
 
-TEXT HERE
+
+## The software model
+
+Voor dit onderzoek is gebruik gemaakt van package deSolve (v1.28) met bijbehorende functies zoals de functie ode (ordinary differential equation, gewoonlijke differentiaal vergelijking). met de ode functie worden er tijds afhankelijke parameters gebruikt om de differentiele vergelijkingen op te lossen.
+
+De code bevat een functie die per tijdsstip de afgeleide bepaald, dR. Hij heeft daarvoor verschillende parameters nodig zoals, de decay per tijdseenheid en tijdslengte. ODE werkt als een soort loop, hij runt de gemaakte funcite mRNA_func per tijdsstip en returned uiteindelijk de verkregen afgeleide waarden. Dit word op het laatst geplot in een grafiek zodat ook de evenwichtstoestand zichtbaar is.
+
+```{r methods, echo=TRUE}
+# De gebruikte library:
+library(deSolve)
+```
+
+De return waarde van de functie mRNA_func geeft per tijdsstip de afgeleide terug ingepakt in een list omdat de functie ode van deSolve een list nodig heeft als input. Wij returnen dit zelf omdat we niet willen dat de ode functie vaker loopt dan nodig is ( want de return geeft all waarden terug, en is een soort van break uit de functie ).
+
+## Model configuration
+
+In de tabel hieronder staan de gekozen parameters beschreven. Er is gekozen voor een r = 0.2 omdat een klein deel van de transcripten
+decay zal vertonen. De m is gesteld op 150, en de beginhoeveelheid van transcripten op 100, een mooi rond getal.
+
+\begin{longtable}[l]{l|l|l}
+\caption{Parameter Values} \\ \hline
+\label{param_table}
+$\textbf{Parameter}$             &$\textbf{Value}$& $\textbf{Unit}$              \\ \hline
+\endhead
+$r$       & 0.2  & $Aantal\ Decay's$         \\ \hline
+$m$       & 150  & $Aantal\ transcripten\ per\ tijdseenheid$   \\ \hline
+$R$       & 100  & $Aantal\ transcripten\ bij t = 0$   \\ \hline
+\end{longtable}
+
+
+# Results
+
+Hierbij de code die de resultaten oplevert voor het model:
 
 ```{r}
 # Functie met de volgende parameters:
@@ -138,77 +169,43 @@ state <- c(R = 100)
 parameters <- c(r = 0.2, m = 5) 
 out_1 <- deSolve::ode(times = t, y = state, parms = parameters, func = mRNA_func, method = "euler")
 
-parameters <- c(r = 0.2, m = 35) 
+parameters <- c(r = 0.1, m = 20) 
 out_2 <- deSolve::ode(times = t, y = state, parms = parameters, func = mRNA_func, method = "euler")
 
 parameters <- c(r = 0, m = 0) 
 out_3 <- deSolve::ode(times = t, y = state, parms = parameters, func = mRNA_func, method = "euler")
 
+parameters <- c(r = 0.5, m = 5) 
+out_4 <- deSolve::ode(times = t, y = state, parms = parameters, func = mRNA_func, method = "euler")
+
 # Plot de verkregen values uit out.
 plot(out_1, main = "mRNA model", xlab = "Tijdsstip", ylab = "Aantal transcripten", ylim = c(0, 200))
 lines(out_2, col = "green")
 lines(out_3, col = "blue")
+lines(out_4, col = "red")
 
 # Add a cool legend!
 par(xpd=TRUE)
-legend(23, 230, legend=c("Decreasing over time", "Increasing over time", "steady-state"),
-       col=c("black", "green", "blue"), lty=1, cex=0.8)
+legend(23, 230, legend=c("Decreasing over time", "Increasing over time", "steady-state", "test-line"),
+       col=c("black", "green", "blue", "red"), lty=1, cex=0.8)
 
 ```
 
-## The software model
-Hier vr 4!
-Voor dit onderzoek is gebruik gemaakt van package deSolve (v1.28) met bijbehorende functies zoals de functie ode (ordinary differential equation, gewoonlijke differentiaal vergelijking). met de ode functie worden er tijds afhankelijke parameters gebruikt om de differentiele vergelijkingen op te lossen.
-
-- Describe the software tools used, as well as the libraries
-- Describe the software implementation (note: code below is an example)
-
-De code bevat een functie die per tijdsstip de afgeleide bepaald, dR. Hij heeft daarvoor verschillende parameters nodig zoals, de decay per tijdseenheid en tijdslengte. ODE werkt als een soort loop, hij runt de gemaakte funcite mRNA_func per tijdsstip en returned uiteindelijk de verkregen afgeleide waarden. Dit word op het laatst geplot in een grafiek zodat ook de evenwichtstoestand zichtbaar is.
-
-```{r methods, echo=TRUE}
-library(deSolve)
-# code
-```
-
-Wat is de return waarde van de model functie in R? Waarom return je die en niet R zelf?
-
-De return waarde van de functie mRNA_func geeft per tijdsstip de afgeleide terug ingepakt in een list omdat de functie ode van deSolve een list nodig heeft als input. Wij returnen dit zelf omdat we niet willen dat de ode functie vaker loopt dan nodig is ( want de return geeft all waarden terug, en is een soort van break uit de functie ).
-
-## Model configuration
-Hier antwoorden vr 1 invullen!
-Explain chosen initial state, parameter values and time sequence. Use tables with values as for example below
-\begin{longtable}[l]{l|l|l}
-\caption{Parameter Values} \\ \hline
-\label{param_table}
-$\textbf{Parameter}$             &$\textbf{Value}$& $\textbf{Unit}$              \\ \hline
-\endhead
-$r$       & 0.2  & $Aantal\ Decay's$         \\ \hline
-$m$       & 150  & $Aantal\ transcripten\ per\ tijdseenheid$   \\ \hline
-\end{longtable}
-
-
-# Results
-Introduction of results, how does it answer your research questions.
-```{r , results, echo=TRUE}
-#plot(out)
-#code to generate figures with title, subscripts, legenda etc
-```
-
-- Describe what can be seen in such way that it leads to an answer to your research questions
-- Give your figures a number and a descriptive title.
-- Provide correct axis labels (unit and quantity), legend and caption.
-- Always refer to and discuss your figures and tables in the text - they never stand alone.
-
+Het figuur hierboven beeld 3 scenario's uit die kunnen gebeuren bij mRNA. Een stable-state, dus waarbij
+het aantal transcripten gelijk blijft, een decreasing state, waarbij de transcripten in de tijd afnemen, en
+een increasing state, waarbij de transcripten in de tijd toenemen. Hier bij is te zien, des te hoger de m
+des te meer transcripten. Maar des te lager de r des te langer het duurt om bij de evenwichtstoestand te komen.
 
 # Discussion and Conclusion
+
 ## Discussion
-- Compare your results with what is expecting from the literature and discuss differences with them.
-- Discuss striking and surprising results.
-- Discuss weaknesses in your research and how they could be addressed.
+
+De gestelde hypothese hield in: "naarmate de r groter wordt (hellingsgetal) zal de uitkomst van de vergelijking dR/dt = -rR + m groter worden (dus dR/dt wordt groter)". Na dit getest te hebben is gebleken dat hoe groter r is, des te lager de uitkomst van dR/dt zal zijn zoals te zien is in het figuur hierboven ( de test-line ). Ook is gebleken dat hoe groter de m is des te meer transcripten gevormd worden ( wat ook logisch is als je kijkt naar de betekenis m ). Een zwakte in het onderzoek is wellicht de (incomplete/onduidelijke) uitleg bij de code en opgaven, hier zal nog naar gekeken moeten worden.
 
 ## General conclusion and perspective
-Discuss what your goal was, what the end result is and how you could continue working from here.
 
+Het doel was om een mRNA model te maken, dit is zeker gelukt. Er zijn 2 plotjes gecreeerd. Dit type model zou voor
+veel andere doeleinden zoals data van een bevolingsgroep of bijvoorbeeld eiwit data ook gebruikt kunnen worden.
 
 \begin{thebibliography}{9}
 
