@@ -15,5 +15,6 @@ knitr::opts_chunk$set(echo = TRUE)
     m = het nieuwe aantal van nieuwe transcripten per seconden.
     m wordt erbij opgeteld.
     [2] Zoek bronnen op internet die uitleggen waar de formule dR/dt = -rR + m vandaan komt.
+    
     [3] Teken het biologisch model en leg de vertaling naar de formule uit.
     [4] Wat is de return waarde van de model functie in R? Waarom return je die en niet R zelf?
