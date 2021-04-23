@@ -11,20 +11,30 @@ output:
       number_sections: yes
 linkcolor: blue
 ---
-
+notatie:
+Met de synthese als aantal nieuwe transcripties per seconde (m) en de de afbraak is de ratio (r) vermenigvuldigt met het aantal transcripties (R).
+deze worden gevisualiseerd door figuren te knitten/genereren door het model met diverse parameters recursief aan te passen. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 # Introduction
 Introduction of the research and introduction research questions
-TEXT HERE
+Ons onderzoek zal een dynamisch mRNA synthese model. De onderzoeksvragen zijn;
+- Welke parameters moeten er geprogrammeerd worden?
+- Er moeten internet bronnen gevonden worden waar de formule dR/dt = -rR + m vandaan komt.
+- We moeten een biologisch model tekenen en we leggen de formule door middel van een vertaling uit.
+- Achterhalen wat de return waarde van de model functie in R is, daarna deze verder toelichten (waarom we deze returnen en niet R zelf).
 
 ## Goal
   - Describe Goal (not the educational goal but the research goal)
   - Describe how you reach the goal (e.g. make model and figures, use different setting)
-  - formulate hypothesis
+  - formulate hypothesis 
+Het onderzoeksdoel is om een dynamisch mRNA proces te modelleren door te programmeren en visualiseren in R met behulp van simulaties.
+De onderzoekshypothese luidt; naarmate de r groter wordt (hellingsgetal) zal de uitkomst van de vergelijking dR/dt = -rR + m groter worden (dus dR/dt wordt groter).
+
 TEXT HERE
 
 ## Theory
