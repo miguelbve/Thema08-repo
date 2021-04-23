@@ -46,7 +46,14 @@ TEXT HERE
 - Picture of the biological model
 
 vr 3 hier beantwoorden en refereren naar bron artikel (theorie)
-In dit onderzoek worden de parameters R en m geprogrammeerd, omdat deze variabel per tijdseenheid zijn. De internetbron is te vinden onder de volgende link: https://d2vlcm61l7u1fs.cloudfront.net/media%2Fe7e%2Fe7e23282-c3fd-4367-8a63-a13364e0c120%2FphpSLUnLT.png. (netjes in de bibliotheek bibtex).
+In dit onderzoek worden de parameters R en m geprogrammeerd, omdat deze variabel per tijdseenheid zijn. Op internet is de volgende internet bron gebruikt die uitlegt waar de formule dR/dt = -rR + m vandaan komt; \@ref(fig:formule_uitleg_bron)
+
+```{r formule_uitleg_bron}
+knitr::include_graphics("model_reference.png")
+```
+
+
+https://d2vlcm61l7u1fs.cloudfront.net/media%2Fe7e%2Fe7e23282-c3fd-4367-8a63-a13364e0c120%2FphpSLUnLT.png (netjes in de bibliotheek bibtex).
 
 ```{r theory, echo=FALSE}
 #knitr::include_graphics('example.png')
