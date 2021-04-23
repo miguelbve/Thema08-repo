@@ -67,7 +67,7 @@ Moet dit hier?
 # Methods
 
 ```{r}
-parameters <- c(r = 0.2, m = 150) 
+parameters <- c(r = 0.1, m = 150) 
 
 # Functie met de volgende parameters:
 #   - t = Tijdslengte
@@ -101,6 +101,54 @@ cat("Max Value :", max_value)
 ```
 
 TEXT HERE
+
+```{r}
+# Functie met de volgende parameters:
+#   - t = Tijdslengte
+#   - R = Het aantal transcripten
+#   - parms = De "rate of decay" en het aantal nieuwe transcripten per tijdseenheid.
+
+# Deze functie berekent de dR per tijdseenheid en returned deze in een lijst.
+mRNA_func <- function(t, R, parms){
+  with(as.list(c(parms)),{
+         dR <- -r * R + m
+         return(list(c(dR)))
+       }
+       )
+}
+
+# We maken een tijdslengte van t = 0 tot t = 100.
+t <- seq(0, 30)
+
+# De beginwaarde van R is 100 transcripten
+state <- c(R = 100)
+
+# Run de "ode" functie die met bepaalde parameters een model kan weergeven
+# En sla dit op in out
+
+# ----------------------------------------------------------------
+# We gaan 3 scenarios plotten
+
+parameters <- c(r = 0.2, m = 5) 
+out_1 <- ode(times = t, y = state, parms = parameters, func = mRNA_func, method = "euler")
+
+parameters <- c(r = 0.2, m = 35) 
+out_2 <- ode(times = t, y = state, parms = parameters, func = mRNA_func, method = "euler")
+
+parameters <- c(r = 0, m = 0) 
+out_3 <- ode(times = t, y = state, parms = parameters, func = mRNA_func, method = "euler")
+
+# Plot de verkregen values uit out.
+plot(out_1, main = "mRNA model", xlab = "Tijdsstip", ylab = "Aantal transcripten", ylim = c(0, 200))
+lines(out_2, col = "green")
+lines(out_3, col = "blue")
+
+# Add a cool legend!
+par(xpd=TRUE)
+legend(23, 230, legend=c("Decreasing over time", "Increasing over time", "steady-state"),
+       col=c("black", "green", "blue"), lty=1, cex=0.8)
+
+```
 
 ## The software model
 Hier vr 4!
