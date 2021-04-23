@@ -38,6 +38,8 @@ De onderzoekshypothese luidt; naarmate de r groter wordt (hellingsgetal) zal de 
 TEXT HERE
 
 ## Theory
+De tijdelijke dynamica van geactiveerde mRNA transcriptie is beschreven door de code die te vinden is onder Methods.
+
 
 TEXT HERE
 - Describe biological model
@@ -54,10 +56,9 @@ and formula explanation
 
 $$\frac{\delta R}{\delta t} = -r * R + m $$
 Describe each element and the transformations
- Beantwoord de volgende vragen
 
-Moet dit hier?
-
+Beantwoord de volgende vragen
+ 
     [1] Welke parameters moet je programmeren?
     [2] Zoek bronnen op internet die uitleggen waar de formule dR/dt = -rR + m vandaan komt.
     [3] Teken het biologisch model en leg de vertaling naar de formule uit. (komt in het include_graphics)
@@ -152,6 +153,7 @@ legend(23, 230, legend=c("Decreasing over time", "Increasing over time", "steady
 
 ## The software model
 Hier vr 4!
+Voor dit onderzoek is gebruik gemaakt van package deSolve (v1.28) met bijbehorende functies zoals de functie ode (ordinary differential equation, gewoonlijke differentiaal vergelijking). met de ode functie worden er tijds afhankelijke parameters gebruikt om de differentiele vergelijkingen op te lossen.
 
 - Describe the software tools used, as well as the libraries
 - Describe the software implementation (note: code below is an example)
@@ -159,6 +161,8 @@ Hier vr 4!
 library(deSolve)
 # code
 ```
+
+[4] Wat is de return waarde van de model functie in R? Waarom return je die en niet R zelf?
 
 ## Model configuration
 Hier antwoorden vr 1 invullen!
