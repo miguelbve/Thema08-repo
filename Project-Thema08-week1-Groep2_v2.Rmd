@@ -1,14 +1,14 @@
 ---
-title: " Week 1: mRNA dynamic "
+title: ' Week 1: mRNA dynamic '
 author: "Jurrien de Jong en Miguel Botter van Elburg"
 date: "`r Sys.Date()`"
-
-header-includes:
-   - \usepackage{longtable}
-   - \usepackage{hyperref}
 output:
-    html_document:
-      number_sections: yes
+  pdf_document: default
+  html_document:
+    number_sections: yes
+header-includes:
+- \usepackage{longtable}
+- \usepackage{hyperref}
 linkcolor: blue
 ---
 notatie:
@@ -164,12 +164,17 @@ Voor dit onderzoek is gebruik gemaakt van package deSolve (v1.28) met bijbehoren
 
 - Describe the software tools used, as well as the libraries
 - Describe the software implementation (note: code below is an example)
+
+De code bevat een functie die per tijdsstip de afgeleide bepaald, dR. Hij heeft daarvoor verschillende parameters nodig zoals, de decay per tijdseenheid en tijdslengte. ODE werkt als een soort loop, hij runt de gemaakte funcite mRNA_func per tijdsstip en returned uiteindelijk de verkregen afgeleide waarden. Dit word op het laatst geplot in een grafiek zodat ook de evenwichtstoestand zichtbaar is.
+
 ```{r methods, echo=TRUE}
 library(deSolve)
 # code
 ```
 
-[4] Wat is de return waarde van de model functie in R? Waarom return je die en niet R zelf?
+Wat is de return waarde van de model functie in R? Waarom return je die en niet R zelf?
+
+De return waarde van de functie mRNA_func geeft per tijdsstip de afgeleide terug ingepakt in een list omdat de functie ode van deSolve een list nodig heeft als input. Wij returnen dit zelf omdat we niet willen dat de ode functie vaker loopt dan nodig is ( want de return geeft all waarden terug, en is een soort van break uit de functie ).
 
 ## Model configuration
 Hier antwoorden vr 1 invullen!
@@ -179,9 +184,8 @@ Explain chosen initial state, parameter values and time sequence. Use tables wit
 \label{param_table}
 $\textbf{Parameter}$             &$\textbf{Value}$& $\textbf{Unit}$              \\ \hline
 \endhead
-$a$       & 0.08  & $hour^{-1}$         \\ \hline
-$b$       & 0.06  & $hour^{-1}$         \\ \hline
-$c$       & 0.06  & $hour^{-1}$         \\ \hline
+$r$       & 0.2  & $Aantal\ Decay's$         \\ \hline
+$m$       & 150  & $Aantal\ transcripten\ per\ tijdseenheid$   \\ \hline
 \end{longtable}
 
 
