@@ -8,10 +8,8 @@ header-includes:
 - \usepackage{longtable}
 - \usepackage{hyperref}
 linkcolor: blue
+bibliography: bibliography.bib
 ---
-notatie:
-Met de synthese als aantal nieuwe transcripties per seconde (m) en de de afbraak is de ratio (r) vermenigvuldigt met het aantal transcripties (R).
-deze worden gevisualiseerd door figuren te knitten/genereren door het model met diverse parameters recursief aan te passen. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -20,11 +18,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-Ons onderzoek zal een dynamisch mRNA synthese model. De onderzoeksvragen zijn;
+Ons onderzoek is een dynamisch mRNA synthese model. De volgende relevante zaken worden behandelt;
 
 - Welke parameters moeten er geprogrammeerd worden?
 - Er moeten internet bronnen gevonden worden waar de formule dR/dt = -rR + m vandaan komt.
-- We moeten een biologisch model tekenen en we leggen de formule door middel van een vertaling uit.
+- We moeten een biologisch model ontwerpen en we leggen de formule door middel van een vertaling uit.
 - Achterhalen wat de return waarde van de model functie in R is, daarna deze verder toelichten (waarom we deze returnen en niet R zelf).
 
 ## Goal
@@ -36,35 +34,21 @@ De onderzoekshypothese luidt; naarmate de r groter wordt (hellingsgetal) zal de 
 
 De tijdelijke dynamica van geactiveerde mRNA transcriptie is beschreven door de code die te vinden is onder Methods.
 
-
-TEXT HERE
-- Describe biological model
-- Picture of the biological model
-
-vr 3 hier beantwoorden en refereren naar bron artikel (theorie)
-In dit onderzoek worden de parameters R en m geprogrammeerd, omdat deze variabel per tijdseenheid zijn. Op internet is de volgende internet bron gebruikt die uitlegt waar de formule dR/dt = -rR + m vandaan komt; \@ref(fig:formule_uitleg_bron)
+In dit onderzoek worden de parameters R en m geprogrammeerd van het model gemodelleerd, omdat deze variabel per tijdseenheid zijn. Op internet is de volgende [@Donlin-Aspe2017578118] bron gebruikt die uitlegt waar de formule dR/dt = -rR + m vandaan komt.
 
 ```{r formule_uitleg_bron}
 knitr::include_graphics("model_reference.png")
 ```
 
-https://d2vlcm61l7u1fs.cloudfront.net/media%2Fe7e%2Fe7e23282-c3fd-4367-8a63-a13364e0c120%2FphpSLUnLT.png (netjes in de bibliotheek bibtex).
-
-
 ```{r theory, echo=FALSE}
-#knitr::include_graphics('example.png')
 knitr::include_graphics('model.png')
 ```
-
-Give an explanation of the model with citations of source \cite{Soertaert10} (replace this with actual source)
-and formula explanation
 
 $$\frac{\delta R}{\delta t} = -r * R + m $$
 
 - R is the number of transcripts\n
 - r is the rate of decay of existing transcripts\n
 - m is the number of new transcripts produced per second\n
-
 # Methods
 
 ## The software model
@@ -134,9 +118,7 @@ $R$       & 100  & $Aantal\ transcripten\ bij t = 0$   \\ \hline
 
 # Results
 
-Hierbij de code die de resultaten oplevert voor het model:
-
-```{r}
+```{r model}
 # Functie met de volgende parameters:
 #   - t = Tijdslengte
 #   - R = Het aantal transcripten
@@ -188,7 +170,7 @@ legend(23, 230, legend=c("Decreasing over time", "Increasing over time", "steady
 
 ```
 
-Het figuur hierboven beeld 3 scenario's uit die kunnen gebeuren bij mRNA. Een stable-state, dus waarbij
+Het figuur  beeld 3 scenario's uit die kunnen gebeuren bij mRNA. Een stable-state, dus waarbij
 het aantal transcripten gelijk blijft, een decreasing state, waarbij de transcripten in de tijd afnemen, en
 een increasing state, waarbij de transcripten in de tijd toenemen. Hier bij is te zien, des te hoger de m
 des te meer transcripten. Maar des te lager de r des te langer het duurt om bij de evenwichtstoestand te komen.
@@ -202,12 +184,4 @@ De gestelde hypothese hield in: "naarmate de r groter wordt (hellingsgetal) zal 
 ## General conclusion and perspective
 
 Het doel was om een mRNA model te maken, dit is zeker gelukt. Er zijn 2 plotjes gecreeerd. Dit type model zou voor
-veel andere doeleinden zoals data van een bevolingsgroep of bijvoorbeeld eiwit data ook gebruikt kunnen worden.
-
-\begin{thebibliography}{9}
-
-\bibitem{Soertaert10}
-Soetaert, K., Petzoldt, T., and Woodrow Setzer, R.: \textit{Solving differential equations in R: package deSolve}, J. Stat. Softw., 33, 1-25, 2010.
-Soetaert, K., De Jong, T., and Woodrow Setzer, R.: \textit{Solving differential equations in R: package deSolve}, J. Stat. Softw., 33, 1-25, 2010.
-
-\end{thebibliography}
+veel andere doeleinden zoals geboorte- en sterftecijfers van een bevolkingsgroep of dynamische eiwit ontwikkelingen.
