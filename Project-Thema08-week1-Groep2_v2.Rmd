@@ -170,7 +170,7 @@ legend(23, 230, legend=c("Decreasing over time", "Increasing over time", "steady
 
 ```
 
-Het figuur  beeld 3 scenario's uit die kunnen gebeuren bij mRNA. Een stable-state, dus waarbij
+Het figuur \ref{fig:model} beeld 3 scenario's uit die kunnen gebeuren bij mRNA. Een stable-state, dus waarbij
 het aantal transcripten gelijk blijft, een decreasing state, waarbij de transcripten in de tijd afnemen, en
 een increasing state, waarbij de transcripten in de tijd toenemen. Hier bij is te zien, des te hoger de m
 des te meer transcripten. Maar des te lager de r des te langer het duurt om bij de evenwichtstoestand te komen.
