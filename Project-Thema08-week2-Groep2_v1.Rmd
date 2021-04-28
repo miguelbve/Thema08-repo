@@ -114,7 +114,12 @@ element het proces in werking stelt en behoud
 ## General conclusion and perspective
 Discuss what your goal was, what the end result is and how you could continue working from here.
 
-Om het model te verbeteren zou er meer achtergrond kennis moeten worden opgedaan, aangezien de theorie tot nu toe uit maar 4 bronnen plus een html bron bestaat. Al met al is het model getest en is de betrouwbaarheid
-door verschillende parameters te gebruiken geoptimaliseerd en wel significant betrouwbaar.
+Dit moet zet ik nog in de conclusie en discussie:
+
+De biologische netwerken met deze parameters in deze simulatie zijn hoofdaspecten van immuun systeembiologie. Ookal is het model niet volledig nauwkeurig vergeleken met het daadwerkelijke systeem, deze is alsnog goed in staat om de intrensieke complexiteit van het immuun systeem uit te leggen.
+
+Om het model preciezer te maken zou er meer achtergrond informatie moeten worden  opgedaan en geïmplementeerd, aangezien de theorie nu uit slechts vier bronnen plus een aangereikte bron van de vakdocent betreffen. 
+
+Al met al is, middels het testen, en door verschillende parameters te gebruiken plus verschillende geproduceerde resultaten, het model wel significant betrouwbaar en praktisch toepasbaar voor nader onderzoek.
 
 \begin{thebibliography}{9}
