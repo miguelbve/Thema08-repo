@@ -15,12 +15,6 @@ bibliography: bibliography.bib
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 # Introduction
 Introduction of the research and introduction research questions
 
@@ -33,6 +27,24 @@ Introduction of the research and introduction research questions
 
 - Describe biological model
 - Picture of the biological model
+
+Corticosteroïden zijn chemische stoffen met een structuur die lijkt op de structuur van hormonen 
+die door de bijnier worden aangemaakt. Deze bijnierhormonen, zoals bijvoorbeeld cortisol, 
+spelen een rol bij ontstekingen en de afweer tegen infecties [D].
+
+Bij een corticosteroïden behandeling wordt een medicijn (hormoon corticosteroïd) in een 
+gewricht, peesschede of rond de zenuw gebracht. De corticosteroïden hebben een 
+ontstekingsremmende werking en geven de geprikkelde zenuwen rust [A].
+
+Enkele voorbeelden van corticosteroïden zijn; Predniso(lo)n, Dexamethason, (Hydro)cortison, 
+Triamcinolon, Betametason, Fluticason [B].
+
+De werking van corticosteroïden verschilt. Dit geldt voor sterkte, toedieningsvorm en mate van 
+bijwerkingen. Het kan voorgeschreven worden als stootkuur (korte periode een hoge dosering), 
+maar ook langdurig als onderhoudsbehandeling. In het geval van longpatiënten worden 
+corticosteroïden gebruikt als ontstekingsremmer en worden ze ingezet bij allergische reacties op 
+uitwendige prikkels (vb: hooikoorts, eczeem) [C].
+
 
 ```{r, echo=FALSE, out.width='95%'}
 #knitr::include_graphics('example.png')
@@ -49,6 +61,13 @@ Describe each element and the transformations
 
 - Describe the software tools used, as well as the libraries
 - Describe the software implementation (note: code below is an example)
+
+De glucocorticoiden zullen met name meerdere ontstekings geactiveerde genen uitzetten, die 
+coderen voor cytokines, chemokines, hechtings moleculen van ontstoken enzymen en receptors
+(zie Fig 1). Deze genen zijn aangezet in de luchtwegen door pro-ontstekings transcriptie 
+factoren, zoals nuclear factor-κB (NF-κB) en activator protein-1 (AP-1), die normaal gesproken 
+beide worden geactiveerd in de buurt van asthma en COPD ontstekingen (zie Fig 2).
+
 ```{r}
 library(deSolve)
 # code
@@ -87,8 +106,20 @@ Introduction of results, how does it answer your research questions.
 - Discuss striking and surprising results.
 - Discuss weaknesses in your research and how they could be addressed.
 
+Uit de tekst blijkt DR (de dichtheid van het MPL-receptor complex) significant afhankelijk te zijn t.o.v. 
+de andere variabelen. Deze zal het belangrijkst zijn voor de werking van het geneesmiddel, aangezien 
+de transcriptie van de eigen receptoren door het medicijn MPL aan het glucocorticoid respons 
+element het proces in werking stelt en behoud
+
 ## General conclusion and perspective
 Discuss what your goal was, what the end result is and how you could continue working from here.
 
+Dit moet zet ik nog in de conclusie en discussie:
+
+De biologische netwerken met deze parameters in deze simulatie zijn hoofdaspecten van immuun systeembiologie. Ookal is het model niet volledig nauwkeurig vergeleken met het daadwerkelijke systeem, deze is alsnog goed in staat om de intrensieke complexiteit van het immuun systeem uit te leggen.
+
+Om het model preciezer te maken zou er meer achtergrond informatie moeten worden  opgedaan en geïmplementeerd, aangezien de theorie nu uit slechts vier bronnen plus een aangereikte bron van de vakdocent betreffen. 
+
+Al met al is, middels het testen, en door verschillende parameters te gebruiken plus verschillende geproduceerde resultaten, het model wel significant betrouwbaar en praktisch toepasbaar voor nader onderzoek.
 
 \begin{thebibliography}{9}
