@@ -70,7 +70,6 @@ beide worden geactiveerd in de buurt van asthma en COPD ontstekingen (zie Fig 2)
 
 ```{r}
 library(deSolve)
-# code
 ```
 
 ## Model configuration
