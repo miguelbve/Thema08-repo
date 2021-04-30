@@ -16,22 +16,20 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Introduction
-Introduction of the research and introduction research questions
-
-## Goal
-  - Describe Goal (not the educational goal but the research goal)
-  - Describe how you reach the goal (e.g. make model and figures, use different setting)
-  - formulate hypothesis
-
-## Theory
-
-- Describe biological model
-- Picture of the biological model
-
 Corticosteroïden zijn chemische stoffen met een structuur die lijkt op de structuur van hormonen 
 die door de bijnier worden aangemaakt. Deze bijnierhormonen, zoals bijvoorbeeld cortisol, 
 spelen een rol bij ontstekingen en de afweer tegen infecties [D].
 
+
+## Goal
+In dit onderzoek staat het biologisch model van het Corticoide hormoon centraal. De volgende relevante zaken worden behandelt;
+
+- Welke parameters moeten er geprogrammeerd worden?
+- Er moeten internet bronnen gevonden worden waar het biologisch model vandaan komt.
+- We moeten een biologisch model ontwerpen en we leggen de formule door middel van een vertaling uit.
+- Achterhalen wat de return waarde van de model functie in R is, daarna deze verder toelichten (waarom we deze returnen en niet R zelf).
+
+## Theory
 Bij een corticosteroïden behandeling wordt een medicijn (hormoon corticosteroïd) in een 
 gewricht, peesschede of rond de zenuw gebracht. De corticosteroïden hebben een 
 ontstekingsremmende werking en geven de geprikkelde zenuwen rust [A].
@@ -47,21 +45,14 @@ uitwendige prikkels (vb: hooikoorts, eczeem) [C].
 
 
 ```{r, echo=FALSE, out.width='95%'}
-#knitr::include_graphics('example.png')
+knitr::include_graphics('Fig1_week2.png.jpg')
+knitr::include_graphics('Fig2_week2.png.jpg')
 ```
-Give an explanation of the model with citations of source \cite{Soertaert10} (replace this with actual source)
-and formula explanation
-
-$$\frac{\delta R}{\delta t} = -r * R + m $$
-Describe each element and the transformations
 
 # Methods
+In dit onderzoek worden de parameters R en m geprogrammeerd van het model gemodelleerd, omdat deze variabel per tijdseenheid zijn. Desolve v1.28 is gebruikt voor de visualisatie van de grafieken.
 
 ## The software model
-
-- Describe the software tools used, as well as the libraries
-- Describe the software implementation (note: code below is an example)
-
 De glucocorticoiden zullen met name meerdere ontstekings geactiveerde genen uitzetten, die 
 coderen voor cytokines, chemokines, hechtings moleculen van ontstoken enzymen en receptors
 (zie Fig 1). Deze genen zijn aangezet in de luchtwegen door pro-ontstekings transcriptie 
@@ -73,6 +64,11 @@ library(deSolve)
 ```
 
 ## Model configuration
+
+```{r}
+# TODO Jurrien
+```
+
 
 Explain chosen initial state, parameter values and time sequence. Use tables with values as for example below
 \begin{longtable}[l]{l|l|l}
@@ -87,10 +83,9 @@ $c$       & 0.06  & $hour^{-1}$         \\ \hline
 
 
 # Results
-Introduction of results, how does it answer your research questions.
+De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden aande hand van een gecreerd model. Hieronder is de code te zien dat zo’n soort model kan produceren:
 ```{r}
-#plot(out)
-#code to generate figures with title, subscripts, legenda etc
+# TODO miguel
 ```
 
 - Describe what can be seen in such way that it leads to an answer to your research questions
@@ -101,10 +96,6 @@ Introduction of results, how does it answer your research questions.
 
 # Discussion and Conclusion
 ## Discussion
-- Compare your results with what is expecting from the literature and discuss differences with them.
-- Discuss striking and surprising results.
-- Discuss weaknesses in your research and how they could be addressed.
-
 Uit de tekst blijkt DR (de dichtheid van het MPL-receptor complex) significant afhankelijk te zijn t.o.v. 
 de andere variabelen. Deze zal het belangrijkst zijn voor de werking van het geneesmiddel, aangezien 
 de transcriptie van de eigen receptoren door het medicijn MPL aan het glucocorticoid respons 
@@ -112,8 +103,6 @@ element het proces in werking stelt en behoud
 
 ## General conclusion and perspective
 Discuss what your goal was, what the end result is and how you could continue working from here.
-
-Dit moet zet ik nog in de conclusie en discussie:
 
 De biologische netwerken met deze parameters in deze simulatie zijn hoofdaspecten van immuun systeembiologie. Ookal is het model niet volledig nauwkeurig vergeleken met het daadwerkelijke systeem, deze is alsnog goed in staat om de intrensieke complexiteit van het immuun systeem uit te leggen.
 
