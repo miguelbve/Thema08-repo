@@ -39,9 +39,15 @@ Glucocorticoid_func <- function(t, y, parms) {
 }
 
 state <- c(mRNAr = 4.74, R = 267, DR = 0, DRN = 0)
-t <- seq(0, 48, by = 1)
+t <- seq(0, 48, by = 0.1)
 
+leuke_legend <- c("leg 1", "leg 2", "leg 3", "leg 4")
+
+out <- deSolve::ode(times = t, y = state, parms = parameters, func = Glucocorticoid_func, method = "lsoda")
+plot(out, ylab = leuke_legend)
+```
+```{r}
 out <- deSolve::ode(times = t, y = state, parms = parameters, func = Glucocorticoid_func, method = "euler")
-plot(out)
+plot(out, ylab = "blabla")
 ```
 
