@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Introduction
 Corticosteroïden zijn chemische stoffen met een structuur die lijkt op de structuur van hormonen 
 die door de bijnier worden aangemaakt. Deze bijnierhormonen, zoals bijvoorbeeld cortisol, 
-spelen een rol bij ontstekingen en de afweer tegen infecties [D].
+spelen een rol bij ontstekingen en de afweer tegen infecties [@D].
 
 
 ## Goal
@@ -32,22 +32,16 @@ In dit onderzoek staat het biologisch model van het Corticoide hormoon centraal.
 ## Theory
 Bij een corticosteroïden behandeling wordt een medicijn (hormoon corticosteroïd) in een 
 gewricht, peesschede of rond de zenuw gebracht. De corticosteroïden hebben een 
-ontstekingsremmende werking en geven de geprikkelde zenuwen rust [A].
+ontstekingsremmende werking en geven de geprikkelde zenuwen rust [@A].
 
 Enkele voorbeelden van corticosteroïden zijn; Predniso(lo)n, Dexamethason, (Hydro)cortison, 
-Triamcinolon, Betametason, Fluticason [B].
+Triamcinolon, Betametason, Fluticason [@B].
 
 De werking van corticosteroïden verschilt. Dit geldt voor sterkte, toedieningsvorm en mate van 
 bijwerkingen. Het kan voorgeschreven worden als stootkuur (korte periode een hoge dosering), 
 maar ook langdurig als onderhoudsbehandeling. In het geval van longpatiënten worden 
 corticosteroïden gebruikt als ontstekingsremmer en worden ze ingezet bij allergische reacties op 
-uitwendige prikkels (vb: hooikoorts, eczeem) [C].
-
-
-```{r, echo=FALSE, out.width='95%'}
-knitr::include_graphics('Fig1_week2.png.jpg')
-knitr::include_graphics('Fig2_week2.png.jpg')
-```
+uitwendige prikkels (vb: hooikoorts, eczeem) [@C].
 
 # Methods
 In dit onderzoek worden de parameters R en m geprogrammeerd van het model gemodelleerd, omdat deze variabel per tijdseenheid zijn. Desolve v1.28 is gebruikt voor de visualisatie van de grafieken.
@@ -60,13 +54,14 @@ factoren, zoals nuclear factor-κB (NF-κB) en activator protein-1 (AP-1), die n
 beide worden geactiveerd in de buurt van asthma en COPD ontstekingen (zie Fig 2).
 
 ```{r}
-library(deSolve)
+knitr::include_graphics('Fig1_week2.png.jpg')
+knitr::include_graphics('Fig2_week2.png.jpg')
 ```
 
 ## Model configuration
 
 ```{r}
-# TODO Jurrien
+# TODO miguel
 ```
 
 
@@ -83,7 +78,7 @@ $c$       & 0.06  & $hour^{-1}$         \\ \hline
 
 
 # Results
-De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden aande hand van een gecreerd model. Hieronder is de code te zien dat zo’n soort model kan produceren:
+De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden aan de hand van een gecreerd model. Hieronder is de code te zien dat zo’n soort model kan produceren;
 ```{r}
 # TODO miguel
 ```
@@ -109,5 +104,3 @@ De biologische netwerken met deze parameters in deze simulatie zijn hoofdaspecte
 Om het model preciezer te maken zou er meer achtergrond informatie moeten worden  opgedaan en geïmplementeerd, aangezien de theorie nu uit slechts vier bronnen plus een aangereikte bron van de vakdocent betreffen. 
 
 Al met al is, middels het testen, en door verschillende parameters te gebruiken plus verschillende geproduceerde resultaten, het model wel significant betrouwbaar en praktisch toepasbaar voor nader onderzoek.
-
-\begin{thebibliography}{9}
