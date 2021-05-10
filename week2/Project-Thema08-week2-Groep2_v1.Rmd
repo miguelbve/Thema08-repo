@@ -54,7 +54,7 @@ coderen voor cytokines, chemokines, hechtings moleculen van ontstoken enzymen en
 factoren, zoals nuclear factor-κB (NF-κB) en activator protein-1 (AP-1), die normaal gesproken 
 beide worden geactiveerd in de buurt van asthma en COPD ontstekingen (zie Fig 2).
 
-```{r}
+```{r chunk_1}
 knitr::include_graphics('Fig1_week2.png.jpg')
 knitr::include_graphics('Fig2_week2.png.jpg')
 ```
@@ -91,7 +91,7 @@ $DR(N)$       & 0  & $fmol/mg protein$         \\ \hline
 De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden
 aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort model kan produceren:
 
-```{r}
+```{r chunck_2}
 # Change the MPL value from mol/L to nmol/L
 D <- 20 * 1000 / 374.471
 cat("D :", D)
