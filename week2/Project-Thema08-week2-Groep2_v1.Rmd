@@ -3,8 +3,7 @@ title: '  Week 2: Glucocorticoid receptor dynamica '
 author: "Jurrien de Jong en Miguel Botter van Elburg"
 date: "`r Sys.Date()`"
 output:
-  pdf_document: default
-  html_document: null
+  html_document: default
 header-includes:
 - \usepackage{longtable}
 - \usepackage{hyperref}
@@ -55,8 +54,8 @@ factoren, zoals nuclear factor-κB (NF-κB) en activator protein-1 (AP-1), die n
 beide worden geactiveerd in de buurt van asthma en COPD ontstekingen (zie Fig 2).
 
 ```{r chunk_1}
-knitr::include_graphics('Fig1_week2.png.jpg')
-knitr::include_graphics('Fig2_week2.png.jpg')
+knitr::include_graphics('Fig1_week2.jpg')
+knitr::include_graphics('Fig2_week2.jpg')
 ```
 
 ## Model configuration
