@@ -3,7 +3,8 @@ title: '  Week 2: Glucocorticoid receptor dynamica '
 author: "Jurrien de Jong en Miguel Botter van Elburg"
 date: "`r Sys.Date()`"
 output:
-  html_document:
+  pdf_document: default
+  html_document: null
 header-includes:
 - \usepackage{longtable}
 - \usepackage{hyperref}
@@ -64,6 +65,27 @@ De tijdslengte die gekozen is, is 48 uur ( omdat dit 2 dagen is en zo een onderz
 en values die gegeven waren via de opdracht gebruikt omdat dit feitelijke, en goed onderzochte waardes zijn. Hier in deze tabel een
 overzicht van de gebruikte waardes:
 
+\begin{longtable}[l]{l|l|l}
+\caption{Parameter Values} \\ \hline
+\label{param_table}
+$\textbf{Parameter}$             &$\textbf{Value}$& $\textbf{Unit}$              \\ \hline
+\endhead
+$IC50_Rm$       & 26.2  & $fmol/mg protein$         \\ \hline
+$kon$       & 0.00329  & $L/nmol/h$         \\ \hline
+$kT$       & 0.63  & $1 / hour$         \\ \hline
+$kre$       & 0.57  & $1 / hour$         \\ \hline
+$Rf$       & 0.49  & $x$         \\ \hline
+$kd_R$       & 0.0572  & $1 / hour$         \\ \hline
+$kd_Rm$       & 0.612  & $x$         \\ \hline
+$ks_r$       & 3.22  & $x$         \\ \hline
+$D$       & 53.40868  & $nmol/L$         \\ \hline
+$Rm0$       & 4.74  & $fmol/g liver$         \\ \hline
+$R0$       & 267  & $fmol/mg protein$         \\ \hline
+$DR$       & 0  & $fmol/mg protein$         \\ \hline
+$DR(N)$       & 0  & $fmol/mg protein$         \\ \hline
+\end{longtable}
+
+
 
 # Results
 De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden
@@ -72,6 +94,7 @@ aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort 
 ```{r}
 # Change the MPL value from mol/L to nmol/L
 D <- 20 * 1000 / 374.471
+cat("D :", D)
 
 # Parameters to be used in the Glucocorticoid function
 parameters <- c(ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
@@ -133,10 +156,15 @@ plot(out$time, out$DR, xlab = "Time ( in hours )", ylab = "Drug-receoptor comple
 plot(out$time, out$DRN, xlab = "Time ( in hours )", ylab = "Activated receptor complex",
      type = "l", lwd = 2, ylim = c(0,50), main= "Figure 4")
 ```
-
+In figuur 1 is de verloop van de hoeveelheid mRNA van de receptor te zien. Opvallend is, is dat de hoeveelheid eerst sterk afneemt,
+dan toeneemt en tot een evenwicht komt. Figuur 2 laat de vrije glucocorticoid receptor dichtheid in het cytosol zien. 
+Hier is een snelle daling the zien na mate tijd vordert. Figuren 3 en 4 lijken best veel op elkaar als je kijkt naar het verloop,
+het is in zekere mate het omgekeerde van figuur 1. Het verschil tussen figuren 3 en 4 zit hem in de locatie, want bij figuur 4
+bevind het zich in de celkern en is het dus geactiveerd.
 
 # Discussion and Conclusion
 ## Discussion
+
 Uit de tekst blijkt DR (de dichtheid van het MPL-receptor complex) significant afhankelijk te zijn t.o.v. 
 de andere variabelen. Deze zal het belangrijkst zijn voor de werking van het geneesmiddel, aangezien 
 de transcriptie van de eigen receptoren door het medicijn MPL aan het glucocorticoid respons 
