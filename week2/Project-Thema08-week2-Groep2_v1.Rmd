@@ -4,6 +4,7 @@ author: "Jurrien de Jong en Miguel Botter van Elburg"
 date: "`r Sys.Date()`"
 output:
   html_document: default
+  pdf_document: default
 header-includes:
 - \usepackage{longtable}
 - \usepackage{hyperref}
@@ -64,25 +65,10 @@ De tijdslengte die gekozen is, is 48 uur ( omdat dit 2 dagen is en zo een onderz
 en values die gegeven waren via de opdracht gebruikt omdat dit feitelijke, en goed onderzochte waardes zijn. Hier in deze tabel een
 overzicht van de gebruikte waardes:
 
-\begin{longtable}[l]{l|l|l}
-\caption{Parameter Values} \\ \hline
-\label{param_table}
-$\textbf{Parameter}$             &$\textbf{Value}$& $\textbf{Unit}$              \\ \hline
-\endhead
-$IC50_Rm$       & 26.2  & $fmol/mg protein$         \\ \hline
-$kon$       & 0.00329  & $L/nmol/h$         \\ \hline
-$kT$       & 0.63  & $1 / hour$         \\ \hline
-$kre$       & 0.57  & $1 / hour$         \\ \hline
-$Rf$       & 0.49  & $x$         \\ \hline
-$kd_R$       & 0.0572  & $1 / hour$         \\ \hline
-$kd_Rm$       & 0.612  & $x$         \\ \hline
-$ks_r$       & 3.22  & $x$         \\ \hline
-$D$       & 53.40868  & $nmol/L$         \\ \hline
-$Rm0$       & 4.74  & $fmol/g liver$         \\ \hline
-$R0$       & 267  & $fmol/mg protein$         \\ \hline
-$DR$       & 0  & $fmol/mg protein$         \\ \hline
-$DR(N)$       & 0  & $fmol/mg protein$         \\ \hline
-\end{longtable}
+
+```{r}
+knitr::include_graphics('Fig3_week2.png')
+```
 
 
 
