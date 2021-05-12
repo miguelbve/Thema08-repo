@@ -13,7 +13,6 @@ header-includes:
 linkcolor: blue
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -106,16 +105,14 @@ Glucocorticoid_func <- function(t, y, parms) {
        }
        )
 }
+```
+```{r}
+par(mfrow = c(2,2) )
 
 # Set initial values
 state <- c(mRNAr = 4.74, R = 267, DR = 0, DRN = 0)
 t <- seq(0, 168, by = 1)
 
-# Make a dataframe from the data of 'out'
-out <- as.data.frame(out)
-```
-```{r}
-par(mfrow = c(2,2) )
 # -----------------------------------------------
 # Dose 0.1
 
