@@ -74,13 +74,13 @@ aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort 
 data <- read.csv("MPL.csv", na.strings = "NA")
 data
 median_MPL_01 <- median(data$MPL_conc[data$dose==0.1], na.rm=T)
-median_MPL_01 
+head(median_MPL_01) 
 ```
 ```{r}
 medians <- aggregate(data[,c("MPL_conc","mRNA","Free_receptor")],list(data$dose,data$time), median, na.rm=T)
 names(medians)[1:2] <- c("dose","time")
 medians <- as.data.frame(medians)
-medians
+head(medians)
 ```
 
 
