@@ -1,0 +1,160 @@
+---
+title: 'Thema08-week1-mRNA '
+author: "Jurrien de Jong"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    number_sections: yes
+  html_document:
+    df_print: paged
+header-includes:
+- \usepackage{longtable}
+- \usepackage{hyperref}
+linkcolor: blue
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+Introduction of the research and introduction research questions
+
+## Goal
+  - Describe Goal (not the educational goal but the research goal)
+  - Describe how you reach the goal (e.g. make model and figures, use different setting)
+  - formulate hypothesis
+
+## Theory
+
+- Describe biological model
+- Picture of the biological model
+
+```{r, echo=FALSE, out.width='95%'}
+#knitr::include_graphics('example.png')
+```
+Give an explanation of the model with citations of source \cite{Soertaert10} (replace this with actual source)
+and formula explanation
+
+$$\frac{\delta R}{\delta t} = -r * R + m $$
+Describe each element and the transformations
+
+# Methods
+
+## The software model
+
+- Describe the software tools used, as well as the libraries
+- Describe the software implementation (note: code below is an example)
+```{r}
+library(deSolve)
+# code
+```
+
+## Model configuration
+
+Explain chosen initial state, parameter values and time sequence. Use tables with values as for example below
+\begin{longtable}[l]{l|l|l}
+\caption{Parameter Values} \\ \hline
+\label{param_table}
+$\textbf{Parameter}$             &$\textbf{Value}$& $\textbf{Unit}$              \\ \hline
+\endhead
+$a$       & 0.08  & $hour^{-1}$         \\ \hline
+$b$       & 0.06  & $hour^{-1}$         \\ \hline
+$c$       & 0.06  & $hour^{-1}$         \\ \hline
+\end{longtable}
+
+# Results
+
+De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden
+aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort model kan produceren:
+
+```{r}
+# Parameters to be used in the Glucocorticoid function
+parameters <- c(ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
+                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+# this function calculates the derivatives and returns it as a list.
+Glucocorticoid_func <- function(t, y, parms) {
+    with(as.list(c(y, parms)),{
+      
+      # Dit model bevat 4 afgeleide functies:
+      # Afgeleide 1:
+  
+      dmRNAr_dt <- ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) - kd_Rm * mRNAr
+  
+      # Afgeleide 2:
+  
+      dR_dt <- ks_r * mRNAr + Rf * kre * DRN - kon * D * R - kd_R * R
+      
+      # Afgeleide 3:
+  
+      dDR_dt <- kon * D * R - kT * DR
+  
+      # Afgeleide 4:
+  
+      dDRN_dt <- kT * DR - kre * DRN
+      
+      return(list(c(dmRNAr_dt, dR_dt, dDR_dt, dDRN_dt)))
+       }
+       )
+}
+
+# Set initial values
+state <- c(mRNAr = 4.74, R = 267, DR = 0, DRN = 0)
+t <- seq(0, 48, by = 0.1)
+
+# Use the ode function from deSolve to create a line using our created function.
+# We use the method: "lsode" to get a smooth curve.
+out <- deSolve::ode(times = t, y = state, parms = parameters,
+                    func = Glucocorticoid_func, method = "lsoda")
+
+# Make a dataframe from the data of 'out'
+out <- as.data.frame(out)
+
+# Make a grid so the plotted output looks nice and organised.
+par(mfrow = c(2,2) )
+
+# Plot all the functions
+plot(out$time, out$mRNAr, xlab = "Time ( in hours )", ylab = "Receptor mRNA",
+     type = "l", lwd = 2, ylim = c(0,5), main= "Figure 1")
+
+plot(out$time, out$R, xlab = "Time ( in hours )", ylab = "Free receptor density",
+     type = "l", lwd = 2, ylim = c(0,300), main= "Figure 2")
+
+plot(out$time, out$DR, xlab = "Time ( in hours )", ylab = "Drug-receoptor complex",
+     type = "l", lwd = 2, ylim = c(0,50), main= "Figure 3")
+
+plot(out$time, out$DRN, xlab = "Time ( in hours )", ylab = "Activated receptor complex",
+     type = "l", lwd = 2, ylim = c(0,50), main= "Figure 4")
+```
+
+
+
+
+- Describe what can be seen in such way that it leads to an answer to your research questions
+- Give your figures a number and a descriptive title.
+- Provide correct axis labels (unit and quantity), legend and caption.
+- Always refer to and discuss your figures and tables in the text - they never stand alone.
+
+
+# Discussion and Conclusion
+## Discussion
+- Compare your results with what is expecting from the literature and discuss differences with them.
+- Discuss striking and surprising results.
+- Discuss weaknesses in your research and how they could be addressed.
+
+## General conclusion and perspective
+Discuss what your goal was, what the end result is and how you could continue working from here.
+
+
+\begin{thebibliography}{9}
+
+\bibitem{Soertaert10}
+Soetaert, K., Petzoldt, T., and Woodrow Setzer, R.: \textit{Solving differential equations in R: package deSolve}, J. Stat. Softw., 33, 1-25, 2010.
+
+Soetaert, K., Petzoldt, T., and Woodrow Setzer, R.: \textit{Solving differential equations in R: package deSolve}, J. Stat. Softw., 33, 1-25, 2010.
+
+\end{thebibliography}
