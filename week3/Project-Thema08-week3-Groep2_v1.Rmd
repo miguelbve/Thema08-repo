@@ -41,6 +41,7 @@ $$\frac{\delta R}{\delta t} = -r * R + m $$
 Describe each element and the transformations
 
 # Methods
+Over het algemeen biedt de mediaan een beter idee van de data verdeling, bij steekproefproefgemiddelden mits zij een normaal verdeling volgen. Aangezien de mediaan robuuster is dan een gemiddelde (mean), want het is minder afhankelijk van uitbijters/uitschieters, omdat het het middelste punt is van een gesorteerde reeks cijfers/getallen/gegevens en de scores niet worden gedeeld door het aantal n. Een goede illustratie zegt meer dan duizend woorden, om die reden is het beter om een grafiek van de mediaan erbij te plotten.
 
 ## The software model
 
