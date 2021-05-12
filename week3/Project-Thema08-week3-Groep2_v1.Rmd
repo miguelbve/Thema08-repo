@@ -72,13 +72,15 @@ aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort 
 
 ```{r}
 data <- read.csv("MPL.csv", na.strings = "NA")
+data
 median_MPL_01 <- median(data$MPL_conc[data$dose==0.1], na.rm=T)
 median_MPL_01 
 ```
 ```{r}
 medians <- aggregate(data[,c("MPL_conc","mRNA","Free_receptor")],list(data$dose,data$time), median, na.rm=T)
 names(medians)[1:2] <- c("dose","time")
-head(medians)
+medians <- as.data.frame(medians)
+medians
 ```
 
 
@@ -134,10 +136,18 @@ par(mfrow = c(2,2) )
 plot(out$time, out$mRNAr, xlab = "Time ( in hours )", ylab = "Receptor mRNA",
      type = "l", lwd = 2, ylim = c(0,5), main= "Figure 1")
 
+points(data$time, data$mRNA, xlab = "Time ( in hours )", ylab = "Free receptor density",
+     lwd = 1, ylim = c(0,300), main= "Figure 2")
 
+lines(medians$time, medians$mRNA, col = "red")
 
 plot(out$time, out$R, xlab = "Time ( in hours )", ylab = "Free receptor density",
      type = "l", lwd = 2, ylim = c(0,300), main= "Figure 2")
+
+points(data$time, data$Free_receptor, xlab = "Time ( in hours )", ylab = "Free receptor density",
+     lwd = 1, ylim = c(0,300), main= "Figure 2")
+
+lines(medians$time, medians$Free_receptor, col = "red")
 
 plot(out$time, out$DR, xlab = "Time ( in hours )", ylab = "Drug-receoptor complex",
      type = "l", lwd = 2, ylim = c(0,50), main= "Figure 3")
