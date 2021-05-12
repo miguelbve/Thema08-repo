@@ -81,12 +81,6 @@ medians_03 <- subset(medians, dose == 0.3 | dose == 0)
 
 
 ```{r}
-# Parameters to be used in the Glucocorticoid function
-parameters <- c(ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
-                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
-                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
-                DR = 0, DRN = 0)
-
 # this function calculates the derivatives and returns it as a list.
 Glucocorticoid_func <- function(t, y, parms) {
     with(as.list(c(y, parms)),{
@@ -117,48 +111,68 @@ Glucocorticoid_func <- function(t, y, parms) {
 state <- c(mRNAr = 4.74, R = 267, DR = 0, DRN = 0)
 t <- seq(0, 168, by = 1)
 
-# Use the ode function from deSolve to create a line using our created function.
-# We use the method: "lsode" to get a smooth curve.
-out <- deSolve::ode(times = t, y = state, parms = parameters,
-                    func = Glucocorticoid_func, method = "lsoda")
-
 # Make a dataframe from the data of 'out'
 out <- as.data.frame(out)
-
-# Make a grid so the plotted output looks nice and organised.
-par(mfrow = c(2,2) )
-
-# Plot all the functions
-plot(out$time, out$mRNAr, xlab = "Time ( in hours )", ylab = "Receptor mRNA",
-     type = "l", lwd = 2, ylim = c(0,5), main= "Figure 1")
-
-points(data$time, data$mRNA, xlab = "Time ( in hours )", ylab = "Free receptor density",
-     lwd = 1, ylim = c(0,300), main= "Figure 2")
-
-lines(medians$time, medians$mRNA, col = "red")
-
-plot(out$time, out$R, xlab = "Time ( in hours )", ylab = "Free receptor density",
-     type = "l", lwd = 2, ylim = c(0,300), main= "Figure 2")
-
-points(data$time, data$Free_receptor, xlab = "Time ( in hours )", ylab = "Free receptor density",
-     lwd = 1, ylim = c(0,300), main= "Figure 2")
-
-lines(medians$time, medians$Free_receptor, col = "red")
-
-plot(out$time, out$DR, xlab = "Time ( in hours )", ylab = "Drug-receoptor complex",
-     type = "l", lwd = 2, ylim = c(0,50), main= "Figure 3")
-
-plot(out$time, out$DRN, xlab = "Time ( in hours )", ylab = "Activated receptor complex",
-     type = "l", lwd = 2, ylim = c(0,50), main= "Figure 4")
 ```
 ```{r}
-plot(out$time, out$mRNAr,
+par(mfrow = c(2,2) )
+# -----------------------------------------------
+# Dose 0.1
+
+parameters_01 <- c(ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
+                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 39.0, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+out_01 <- deSolve::ode(times = t, y = state, parms = parameters_01,
+                    func = Glucocorticoid_func, method = "lsoda")
+
+out_01 <- as.data.frame(out_01)
+
+plot(out_01$time, out_01$mRNAr,
      main="receptor mRNA by dose 0.1",
      ylab=c("nmol/L"), xlab=c(" Time in hours"),
      type='l', lwd = 2, xlim= c(0,60), ylim= c(0,5))
 
 lines(data$time, data$mRNA, type = "p")
 lines(medians_01$time, medians_01$mRNA, type = "l", col= "red")
+
+plot(out_01$time, out_01$R,
+     main="receptor mRNA by dose 0.1",
+     ylab=c("nmol/L"), xlab=c(" Time in hours"),
+     type='l', lwd = 2, xlim= c(0,60), ylim= c(0,500))
+
+lines(data$time, data$Free_receptor, type = "p")
+lines(medians_01$time, medians_01$Free_receptor, type = "l", col= "red")
+
+# -----------------------------------
+# Dose 0.3
+
+parameters_03 <- c(ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
+                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 107, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+out_03 <- deSolve::ode(times = t, y = state, parms = parameters_03,
+                    func = Glucocorticoid_func, method = "lsoda")
+
+out_03 <- as.data.frame(out_03)
+
+plot(out_03$time, out_03$mRNAr,
+     main="Free receptor mRNA by dose 0.3",
+     ylab=c("nmol/L"), xlab=c(" Time in hours"),
+     type='l', lwd = 2, xlim= c(0,60), ylim= c(0,5))
+
+lines(data$time, data$mRNA, type = "p")
+lines(medians_01$time, medians_01$mRNA, type = "l", col= "red")
+
+plot(out_03$time, out_03$R,
+     main="Free receptor mRNA by dose 0.3",
+     ylab=c("nmol/L"), xlab=c(" Time in hours"),
+     type='l', lwd = 2, xlim= c(0,60), ylim= c(0,500))
+
+lines(data$time, data$Free_receptor, type = "p")
+lines(medians_01$time, medians_01$Free_receptor, type = "l", col= "red")
 ```
 
 
