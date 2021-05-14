@@ -171,14 +171,24 @@ plot(out_03$time, out_03$R,
 lines(data$time, data$Free_receptor, type = "p")
 lines(medians_01$time, medians_01$Free_receptor, type = "l", col= "red")
 ```
-Het figuur linksboven en linksonder (de experimentele data) komen wel overeen met elkaar, ze lijken dus een onderliggende relatie te hebben. Ze komen alleen niet volledig overeen, omdat ...
+VRAAGSTELLING:
+Are the results of the model in line with experimental data? If not, what could be the reason? 
+Think of at least one explanation. 
+EINDANTWOORD:
+De resultaten van het model (zwart) komen wel overeen met elkaar, aangezien de gefitte lijnen (rode experiment data) een gevolg zijn van de data observaties
+(zwarte model data). Het onderlinge verschil tussen de twee model zwarte model-lijnen is
+mogelijk te verklaren door het onderlinge verschil in condities van model groepen (sample groups).
+Omdat een hogere drug concentratie leidt tot verhoogde kans van bindingen met mRNA receptoren
+zal de concentratie mRNA bezette receptoren bij een hogere dosis (0.3 ipv 0.1) sneller afnemen
+in een bepaalde tijd (zie fig Receptor mRNA by dose 0.3) dan bij een lagere dosis (zie fig Receptor mRNA by dose 0.1)
+Dat verschil is af te leiden tussen de grafieken!
 
 KOMT MISS VAN PAS
 ```{r a1q3}
-summary(data)
+# summary(data)
 # Notitie: dose numerieke waardes worden nu karakter waardes
-data$dose <- as.character(data$dose)
-stack(data$dose, select=c("0", "0.1", "0.3")
+# data$dose <- as.character(data$dose)
+# stack(data$dose, select=c("0", "0.1", "0.3")
 ```
 
 
