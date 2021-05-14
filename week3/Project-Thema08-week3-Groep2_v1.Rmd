@@ -69,7 +69,7 @@ $c$       & 0.06  & $hour^{-1}$         \\ \hline
 De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden
 aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort model kan produceren:
 
-```{r}
+```{r results}
 data <- read.csv("MPL.csv", na.strings = "NA")
 
 medians <- aggregate(data[,c("MPL_conc","mRNA","Free_receptor")],list(data$dose,data$time), median, na.rm=T)
@@ -127,7 +127,7 @@ out_01 <- deSolve::ode(times = t, y = state, parms = parameters_01,
 out_01 <- as.data.frame(out_01)
 
 plot(out_01$time, out_01$mRNAr,
-     main="receptor mRNA by dose 0.1",
+     main="Receptor mRNA by dose 0.1",
      ylab=c("nmol/L"), xlab=c(" Time in hours"),
      type='l', lwd = 2, xlim= c(0,60), ylim= c(0,5))
 
@@ -135,7 +135,7 @@ lines(data$time, data$mRNA, type = "p")
 lines(medians_01$time, medians_01$mRNA, type = "l", col= "red")
 
 plot(out_01$time, out_01$R,
-     main="receptor mRNA by dose 0.1",
+     main="Free receptor mRNA by dose 0.1",
      ylab=c("nmol/L"), xlab=c(" Time in hours"),
      type='l', lwd = 2, xlim= c(0,60), ylim= c(0,500))
 
@@ -156,7 +156,7 @@ out_03 <- deSolve::ode(times = t, y = state, parms = parameters_03,
 out_03 <- as.data.frame(out_03)
 
 plot(out_03$time, out_03$mRNAr,
-     main="Free receptor mRNA by dose 0.3",
+     main="Receptor mRNA by dose 0.3",
      ylab=c("nmol/L"), xlab=c(" Time in hours"),
      type='l', lwd = 2, xlim= c(0,60), ylim= c(0,5))
 
@@ -171,8 +171,15 @@ plot(out_03$time, out_03$R,
 lines(data$time, data$Free_receptor, type = "p")
 lines(medians_01$time, medians_01$Free_receptor, type = "l", col= "red")
 ```
+Het figuur linksboven en linksonder (de experimentele data) komen wel overeen met elkaar, ze lijken dus een onderliggende relatie te hebben. Ze komen alleen niet volledig overeen, omdat ...
 
-
+KOMT MISS VAN PAS
+```{r a1q3}
+summary(data)
+# Notitie: dose numerieke waardes worden nu karakter waardes
+data$dose <- as.character(data$dose)
+stack(data$dose, select=c("0", "0.1", "0.3")
+```
 
 
 - Describe what can be seen in such way that it leads to an answer to your research questions
