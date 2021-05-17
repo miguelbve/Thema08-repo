@@ -72,9 +72,59 @@ aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort 
 Q2.1
 
     [1] What would be the time course concentration of the activated drug-receptor complex if there was no auto-regulation of glucocorticoid receptor, i.e. if there was not effect of drug on the synthesis of the receptor mRNA? What formula needs to be changed? Adjust the model, run the simulation and plot the results to find out.
-De tijdsverloop van het geactiveerde drug-receptor complex is afhankelijk van de auto-regulatie van de glucorticoide receptor. Hierom moet de formule die de auto-regulatie van de glucorticoide receptor variabele bevat worden aangepast, dat is de formule 'Afgeleide 1' in de code chunk 'formule_modellen'.
-```{r}
+De tijdsverloop van het geactiveerde drug-receptor complex is afhankelijk van de auto-regulatie van de glucorticoide receptor. Hierom moet de formule die de auto-regulatie van de glucorticoide receptor variabele bevat worden aangepast, dat is de formule 'Afgeleide 1' in de code chunk 'formule_modellen'. Zie de onderstaande aangepaste functie van het model en de output daarvan.
 
+(x+1)(x-1) = 0
+Bovenstaande vergelijking is alleen waar als x = -1 of x = 1, omdat dan een van beide producten dan nul is en iets keer nul is nul.
+
+dmRNAr_dt <- ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) - kd_Rm * mRNAr
+Wanneer er geen auto-regulatie is van de glucocorticoide receptor is, betekent het dat de uitkomst nul wordt. Dus de 'Afgeleide 1' herleiden we op nul, net als het voorbeeld van (x+1) (x-1)...
+
+De parameter ks_Rm is afhankelijk van ( 1 - (DRN / (IC50_Rm + DRN) en wordt nul als ( 1 - (DRN / (IC50_Rm + DRN) nul is.
+
+Dus moet de volgende vergelijking worden opgelost...
+ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) = 0
+dus...
+1 -1*(DRN / (IC50_Rm + DRN)) = 0
+dus...
+1 = +1(DRN / (IC5_Rm + DRN))
+dus...
+1 = (DRN / (IC5_Rm + DRN))
+
+dus...
+1 = (0 / (0 + 0)) want 0 / 0 is 1!
+oplossing:
+dus de parameters DRN, IC5_Rm, DRN zijn nul!
+
+
+```{r}
+Glucocorticoid_func <- function(t, y, parms) {
+    with(as.list(c(y, parms)),{
+      
+      # Dit model bevat 4 afgeleide functies:
+      # Afgeleide 1:
+  
+      (x+1)(x-1) = 0
+  
+      
+      dmRNAr_dt <- ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) - kd_Rm * mRNAr
+  
+      # Afgeleide 2:
+  
+      dR_dt <- ks_r * mRNAr + Rf * kre * DRN - kon * D * R - kd_R * R
+      
+      # Afgeleide 3:
+  
+      dDR_dt <- kon * D * R - kT * DR
+  
+      # Afgeleide 4:
+  
+      dDRN_dt <- kT * DR - kre * DRN
+      
+      return(list(c(dmRNAr_dt, dR_dt, dDR_dt, dDRN_dt)))
+       }
+       )
+}
 ```
 nog x tijdverloop zeggen
 
