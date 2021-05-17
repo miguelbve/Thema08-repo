@@ -74,7 +74,7 @@ Q2.1
     [1] What would be the time course concentration of the activated drug-receptor complex if there was no auto-regulation of glucocorticoid receptor, i.e. if there was not effect of drug on the synthesis of the receptor mRNA? What formula needs to be changed? Adjust the model, run the simulation and plot the results to find out.
 De tijdsverloop van het geactiveerde drug-receptor complex is afhankelijk van de auto-regulatie van de glucorticoide receptor. Hierom moet de formule die de auto-regulatie van de glucorticoide receptor variabele bevat worden aangepast, dat is de formule 'Afgeleide 1' in de code chunk 'formule_modellen'.
 ```{r}
-bewijs
+
 ```
 nog x tijdverloop zeggen
 
@@ -200,6 +200,104 @@ KOMT MISS VAN PAS
 # data$dose <- as.character(data$dose)
 # stack(data$dose, select=c("0", "0.1", "0.3")
 ```
+
+Question 2.3
+
+```{r}
+par(mfrow = c(1,2) )
+t <- seq(0, 100, by = 0.1)
+
+parameters_normal <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329,
+                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+parameters_1 <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329/5,
+                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+parameters_2 <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329/2,
+                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+parameters_3 <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329*2,
+                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+parameters_4 <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329*5,
+                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+parameters_5 <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329,
+                kT = 0.63, kre = 0.57/5, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+parameters_6 <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329,
+                kT = 0.63, kre = 0.57/2, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+parameters_7 <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329,
+                kT = 0.63, kre = 0.57*2, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+parameters_8 <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329,
+                kT = 0.63, kre = 0.57*5, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+
+out_1 <- deSolve::ode(times = t, y = state, parms = parameters_1,
+                    func = Glucocorticoid_func, method = "lsoda")
+out_2 <- deSolve::ode(times = t, y = state, parms = parameters_2,
+                    func = Glucocorticoid_func, method = "lsoda")
+out_3 <- deSolve::ode(times = t, y = state, parms = parameters_3,
+                    func = Glucocorticoid_func, method = "lsoda")
+out_4 <- deSolve::ode(times = t, y = state, parms = parameters_4,
+                    func = Glucocorticoid_func, method = "lsoda")
+
+out_5 <- deSolve::ode(times = t, y = state, parms = parameters_5,
+                    func = Glucocorticoid_func, method = "lsoda")
+out_6 <- deSolve::ode(times = t, y = state, parms = parameters_6,
+                    func = Glucocorticoid_func, method = "lsoda")
+out_7 <- deSolve::ode(times = t, y = state, parms = parameters_7,
+                    func = Glucocorticoid_func, method = "lsoda")
+out_8 <- deSolve::ode(times = t, y = state, parms = parameters_8,
+                    func = Glucocorticoid_func, method = "lsoda")
+out <- deSolve::ode(times = t, y = state, parms = parameters_normal,
+                    func = Glucocorticoid_func, method = "lsoda")
+
+out_1 <- as.data.frame(out_1)
+out_2 <- as.data.frame(out_2)
+out_3 <- as.data.frame(out_3)
+out_4 <- as.data.frame(out_4)
+out_5 <- as.data.frame(out_1)
+out_6 <- as.data.frame(out_2)
+out_7 <- as.data.frame(out_3)
+out_8 <- as.data.frame(out_4)
+out <- as.data.frame(out)
+
+plot(out_1$time, out_1$R, type = "l", lwd = 1, xlab = "Time in hours", ylab = "nmol/L", col = "red")
+lines(out_2$time, out_2$R, col = "orange")
+lines(out_3$time, out_3$R, col = "blue")
+lines(out_4$time, out_4$R, col = "purple")
+lines(out$time, out$R, col = "black", lwd = 2)
+
+plot(out_5$time, out_5$R, type = "l", lwd = 1, xlab = "Time in hours", ylab = "nmol/L", col = "red")
+lines(out_6$time, out_6$R, col = "orange")
+lines(out_7$time, out_7$R, col = "blue")
+lines(out_8$time, out_8$R, col = "purple")
+lines(out$time, out$R, col = "black", lwd = 2)
+
+
+```
+
 
 Question 2.4
 
