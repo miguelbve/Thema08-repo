@@ -1,6 +1,6 @@
 ---
 title: 'Thema08-week1-mRNA '
-author: "Jurrien de Jong"
+author: "Miguel Botter van Elburg & Jurrien de Jong"
 date: "`r Sys.Date()`"
 output:
   pdf_document:
