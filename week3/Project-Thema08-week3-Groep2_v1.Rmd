@@ -208,12 +208,14 @@ out <- deSolve::ode(times = t, y = state, parms = parameters,
 
 out <- as.data.frame(out)
 
-plot(out$time, out$mRNAr, type = "l", lwd = 3)
+plot(out$time, out$mRNAr, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
 ```
 
 Question 2.5
 
 ```{r}
+t <- seq(0, 50, by = 0.1)
+
 parameters_1 <- c(ks_Rm = 2.90/5, IC50_Rm = 26.2, kon = 0.00329,
                 kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
                 kd_Rm = 2.9/5/4.74, ks_r = 3.22, D = 53, Rm0 = 4.74,
