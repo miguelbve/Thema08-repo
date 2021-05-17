@@ -69,6 +69,15 @@ $c$       & 0.06  & $hour^{-1}$         \\ \hline
 De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden
 aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort model kan produceren:
 
+Q2.1
+
+    [1] What would be the time course concentration of the activated drug-receptor complex if there was no auto-regulation of glucocorticoid receptor, i.e. if there was not effect of drug on the synthesis of the receptor mRNA? What formula needs to be changed? Adjust the model, run the simulation and plot the results to find out.
+De tijdsverloop van het geactiveerde drug-receptor complex is afhankelijk van de auto-regulatie van de glucorticoide receptor. Hierom moet de formule die de auto-regulatie van de glucorticoide receptor variabele bevat worden aangepast, dat is de formule 'Afgeleide 1' in de code chunk 'formule_modellen'.
+```{r}
+bewijs
+```
+nog x tijdverloop zeggen
+
 ```{r results}
 data <- read.csv("MPL.csv", na.strings = "NA")
 
@@ -79,7 +88,7 @@ medians_03 <- subset(medians, dose == 0.3 | dose == 0)
 ```
 
 
-```{r}
+```{r formule_modellen}
 # this function calculates the derivatives and returns it as a list.
 Glucocorticoid_func <- function(t, y, parms) {
     with(as.list(c(y, parms)),{
@@ -210,6 +219,7 @@ out <- as.data.frame(out)
 
 plot(out$time, out$mRNAr, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
 ```
+
 
 Question 2.5
 
