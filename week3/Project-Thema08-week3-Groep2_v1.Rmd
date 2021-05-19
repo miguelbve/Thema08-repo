@@ -69,144 +69,6 @@ $c$       & 0.06  & $hour^{-1}$         \\ \hline
 De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden
 aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort model kan produceren:
 
-Q2.1
-
-    [1] What would be the time course concentration of the activated drug-receptor complex if there was no auto-regulation of glucocorticoid receptor, i.e. if there was not effect of drug on the synthesis of the receptor mRNA? What formula needs to be changed? Adjust the model, run the simulation and plot the results to find out.
-De tijdsverloop van het geactiveerde drug-receptor complex is afhankelijk van de auto-regulatie van de glucorticoide receptor. Hierom moet de formule die de auto-regulatie van de glucorticoide receptor variabele bevat worden aangepast, dat is de formule 'Afgeleide 1' in de code chunk 'formule_modellen'. Zie de onderstaande aangepaste functie van het model en de output daarvan.
-
-(x+1)(x-1) = 0
-Bovenstaande vergelijking is alleen waar als x = -1 of x = 1, omdat dan een van beide producten dan nul is en iets keer nul is nul.
-
-dmRNAr_dt <- ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) - kd_Rm * mRNAr
-Wanneer er geen auto-regulatie is van de glucocorticoide receptor is, betekent het dat de uitkomst nul wordt. Dus de 'Afgeleide 1' herleiden we op nul, net als het voorbeeld van (x+1) (x-1)...
-
-De parameter ks_Rm is afhankelijk van ( 1 - (DRN / (IC50_Rm + DRN) en wordt nul als ( 1 - (DRN / (IC50_Rm + DRN) nul is.
-
-Dus moet de volgende vergelijking worden opgelost...
-ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) = 0
-dus...
-1 -1*(DRN / (IC50_Rm + DRN)) = 0
-dus...
-1 = +1(DRN / (IC5_Rm + DRN))
-dus...
-1 = (DRN / (IC5_Rm + DRN))
-
-dus...
-1 = (0 / (0 + 0)) want 0 / 0 is 1!
-oplossing:
-dus de parameters DRN, IC5_Rm, DRN zijn nul en de vergelijking kan dus verwijderd worden.
-
-
-```{r}
-Glucocorticoid_func_2.0 <- function(t, y, parms) {
-    with(as.list(c(y, parms)),{
-      
-      # Dit model bevat 4 afgeleide functies:
-      # Afgeleide 1:
-      
-      dmRNAr_dt <- ks_Rm - kd_Rm * mRNAr
-  
-      # Afgeleide 2:
-  
-      dR_dt <- ks_r * mRNAr + Rf * kre * DRN - kon * D * R - kd_R * R
-      
-      # Afgeleide 3:
-  
-      dDR_dt <- kon * D * R - kT * DR
-  
-      # Afgeleide 4:
-  
-      dDRN_dt <- kT * DR - kre * DRN
-      
-      return(list(c(dmRNAr_dt, dR_dt, dDR_dt, dDRN_dt)))
-       }
-       )
-}
-
-parameters <- c(ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
-                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
-                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
-                DR = 0, DRN = 0)
-
-t = seq(0, 20, by = 0.1)
-
-out <- deSolve::ode(times = t, y = state, parms = parameters,
-                    func = Glucocorticoid_func_2.0, method = "lsoda")
-
-
-out <- as.data.frame(out)
-
-plot(out$time, out$mRNAr, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
-```
-nog x tijdverloop zeggen
-
-```{r results}
-data <- read.csv("MPL.csv", na.strings = "NA")
-
-medians <- aggregate(data[,c("MPL_conc","mRNA","Free_receptor")],list(data$dose,data$time), median, na.rm=T)
-names(medians)[1:2] <- c("dose","time")
-medians_01 <- subset(medians, dose == 0.1 | dose == 0)
-medians_03 <- subset(medians, dose == 0.3 | dose == 0)
-```
-
-Question 2.2
-
-```{r}
-parameters <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329,
-                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
-                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
-                DR = 0, DRN = 0)
-
-t = seq(0, 70, by = 0.1)
-
-out_1 <- deSolve::ode(times = t, y = state, parms = parameters,
-                    func = Glucocorticoid_func, method = "lsoda")
-
-parameters <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329,
-                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
-                kd_Rm = 0.612, ks_r = 3.22, D = 0, Rm0 = 4.74,
-                DR = 0, DRN = 0)
-
-out_2 <- deSolve::ode(times = t, y = state, parms = parameters,
-                    func = Glucocorticoid_func, method = "lsoda")
-
-
-out <- as.data.frame(out)
-
-plot(out$time, out$DR, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
-abline(v = 60, col = "red")
-```
-Steady-state wordt ongeveer bereikt bij t = 60 uur. 
-
-
-```{r formule_modellen}
-# this function calculates the derivatives and returns it as a list.
-Glucocorticoid_func <- function(t, y, parms) {
-    with(as.list(c(y, parms)),{
-      
-      # Dit model bevat 4 afgeleide functies:
-      # Afgeleide 1:
-  
-      dmRNAr_dt <- ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) - kd_Rm * mRNAr
-  
-      # Afgeleide 2:
-  
-      dR_dt <- ks_r * mRNAr + Rf * kre * DRN - kon * D * R - kd_R * R
-      
-      # Afgeleide 3:
-  
-      dDR_dt <- kon * D * R - kT * DR
-  
-      # Afgeleide 4:
-  
-      dDRN_dt <- kT * DR - kre * DRN
-      
-      return(list(c(dmRNAr_dt, dR_dt, dDR_dt, dDRN_dt)))
-       }
-       )
-}
-```
-
 ```{r}
 par(mfrow = c(2,2) )
 
@@ -272,10 +134,7 @@ plot(out_03$time, out_03$R,
 lines(data$time, data$Free_receptor, type = "p")
 lines(medians_01$time, medians_01$Free_receptor, type = "l", col= "red")
 ```
-VRAAGSTELLING:
-Are the results of the model in line with experimental data? If not, what could be the reason? 
-Think of at least one explanation. 
-EINDANTWOORD:
+
 De resultaten van het model (zwart) komen wel overeen met elkaar, aangezien de gefitte lijnen (rode experiment data) een gevolg zijn van de data observaties
 (zwarte model data). Het onderlinge verschil tussen de twee model zwarte model-lijnen is
 mogelijk te verklaren door het onderlinge verschil in condities van model groepen (sample groups).
@@ -284,13 +143,157 @@ zal de concentratie mRNA bezette receptoren bij een hogere dosis (0.3 ipv 0.1) s
 in een bepaalde tijd (zie fig Receptor mRNA by dose 0.3) dan bij een lagere dosis (zie fig Receptor mRNA by dose 0.1)
 Dat verschil is af te leiden tussen de grafieken!
 
-KOMT MISS VAN PAS
-```{r a1q3}
-# summary(data)
-# Notitie: dose numerieke waardes worden nu karakter waardes
-# data$dose <- as.character(data$dose)
-# stack(data$dose, select=c("0", "0.1", "0.3")
+
+
+Q2.1
+
+De tijdsverloop van het geactiveerde drug-receptor complex is afhankelijk van de auto-regulatie van de glucorticoide receptor. Hierom moet de formule die de auto-regulatie van de glucorticoide receptor variabele bevat worden aangepast, dat is de formule 'Afgeleide 1' in de code chunk 'formule_modellen'. Zie de onderstaande aangepaste functie van het model en de output daarvan.
+
+(x+1)(x-1) = 0
+Bovenstaande vergelijking is alleen waar als x = -1 of x = 1, omdat dan een van beide producten dan nul is en iets keer nul is nul.
+
+dmRNAr_dt <- ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) - kd_Rm * mRNAr
+Wanneer er geen auto-regulatie is van de glucocorticoide receptor is, betekent het dat de uitkomst nul wordt. Dus de 'Afgeleide 1' herleiden we op nul, net als het voorbeeld van (x+1) (x-1)...
+
+De parameter ks_Rm is afhankelijk van ( 1 - (DRN / (IC50_Rm + DRN) en wordt nul als ( 1 - (DRN / (IC50_Rm + DRN) nul is.
+
+Dus moet de volgende vergelijking worden opgelost...
+ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) = 0
+dus...
+1 -1*(DRN / (IC50_Rm + DRN)) = 0
+dus...
+1 = +1(DRN / (IC5_Rm + DRN))
+dus...
+1 = (DRN / (IC5_Rm + DRN))
+
+dus...
+1 = (0 / (0 + 0)) want 0 / 0 is 1!
+oplossing:
+dus de parameters DRN, IC5_Rm, DRN zijn nul en de vergelijking kan dus verwijderd worden.
+
+```{r}
+Glucocorticoid_func_2.1 <- function(t, y, parms) {
+    with(as.list(c(y, parms)),{
+      
+      # Dit model bevat 4 afgeleide functies:
+      # Afgeleide 1:
+      
+      dmRNAr_dt <- ks_Rm - kd_Rm * mRNAr
+  
+      # Afgeleide 2:
+  
+      dR_dt <- ks_r * mRNAr + Rf * kre * DRN - kon * D * R - kd_R * R
+      
+      # Afgeleide 3:
+  
+      dDR_dt <- kon * D * R - kT * DR
+  
+      # Afgeleide 4:
+  
+      dDRN_dt <- kT * DR - kre * DRN
+      
+      return(list(c(dmRNAr_dt, dR_dt, dDR_dt, dDRN_dt)))
+       }
+       )
+}
+
+parameters <- c(ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
+                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                DR = 0, DRN = 0)
+
+t = seq(0, 48, by = 0.1)
+
+out <- deSolve::ode(times = t, y = state, parms = parameters,
+                    func = Glucocorticoid_func_2.1, method = "lsoda")
+
+
+out <- as.data.frame(out)
+
+par(mfrow=c(2,2))
+  plot(out$time,out$mRNAr,ylim = c(0,5), xlab="Time",ylab="receptor mRNA",type="l",lwd=2)
+  plot(out$time,out$R, ylim = c(100, 300), xlab="Time",ylab="free receptor density",type="l",lwd=2)
+  plot(out$time,out$DR, ylim = c(0,50), xlab="Time",ylab="drug-receptor complex",type="l",lwd=2)
+  plot(out$time,out$DRN, ylim = c(0,50), xlab="Time",ylab="activated receptor complex",type="l",lwd=2)
 ```
+nog x tijdverloop zeggen
+
+```{r results}
+data <- read.csv("MPL.csv", na.strings = "NA")
+
+medians <- aggregate(data[,c("MPL_conc","mRNA","Free_receptor")],list(data$dose,data$time), median, na.rm=T)
+names(medians)[1:2] <- c("dose","time")
+medians_01 <- subset(medians, dose == 0.1 | dose == 0)
+medians_03 <- subset(medians, dose == 0.3 | dose == 0)
+```
+
+Question 2.2
+
+```{r}
+par(mfrow=c(2,2))
+state <- c(mRNAr=4.74, R=267, DR=0, DRN=0)
+
+# Creeer tijdsintervallen
+ObservationTimes<-seq(0, 48, by=1)
+ObservationTimes2 <- seq(0, 72, by=1)
+
+# Model parameters
+parameters <- c(D=20*1000/374.471, ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
+                kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
+                kd_Rm = 0.612, ks_r = 3.22, Rm0 = 4.74,
+                DR = 0, DRN = 0
+)
+
+# call lsoda and store result in out
+out1 <- ode(y=state,times=ObservationTimes, func=Glucocorticoid_func, parms=parameters)
+
+# Maak D = 0
+parameters[1] <- 0
+
+out2 <- ode(y=out1[length(ObservationTimes),2:5], times=ObservationTimes2,   						func=Glucocorticoid_func, parms=parameters) 
+
+out2[,1] <- out2[,1]+ObservationTimes[length(ObservationTimes)]
+
+out <- rbind(out1, out2)
+
+out<-as.data.frame(out)
+out$tot <- out$R + out$DR + out$DRN
+
+plot(out$time,out$mRNAr,ylim = c(0,5), xlab="Time",ylab="receptor mRNA",type="l",lwd=2)
+plot(out$time,out$R, ylim = c(0,500), xlab="Time",ylab="free receptor density",type="l",lwd=2)
+plot(out$time,out$DR, ylim = c(0,50), xlab="Time",ylab="crug-receptor complex",type="l",lwd=2)
+plot(out$time,out$DRN, ylim = c(0,50), xlab="Time",ylab="activated receptor complex",type="l",lwd=2)
+```
+
+
+```{r formule_modellen}
+# this function calculates the derivatives and returns it as a list.
+Glucocorticoid_func <- function(t, y, parms) {
+    with(as.list(c(y, parms)),{
+      
+      # Dit model bevat 4 afgeleide functies:
+      # Afgeleide 1:
+  
+      dmRNAr_dt <- ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) - kd_Rm * mRNAr
+  
+      # Afgeleide 2:
+  
+      dR_dt <- ks_r * mRNAr + Rf * kre * DRN - kon * D * R - kd_R * R
+      
+      # Afgeleide 3:
+  
+      dDR_dt <- kon * D * R - kT * DR
+  
+      # Afgeleide 4:
+  
+      dDRN_dt <- kT * DR - kre * DRN
+      
+      return(list(c(dmRNAr_dt, dR_dt, dDR_dt, dDRN_dt)))
+       }
+       )
+}
+```
+
 
 Question 2.3
 
