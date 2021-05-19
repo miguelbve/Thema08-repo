@@ -17,6 +17,15 @@ linkcolor: blue
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r prep}
+data <- read.csv("MPL.csv", na.strings = "NA")
+
+medians <- aggregate(data[,c("MPL_conc","mRNA","Free_receptor")],list(data$dose,data$time), median, na.rm=T)
+names(medians)[1:2] <- c("dose","time")
+medians_01 <- subset(medians, dose == 0.1 | dose == 0)
+medians_03 <- subset(medians, dose == 0.3 | dose == 0)
+```
+
 # Introduction
 Zal een model altijd kloppen? Wanneer we de model data vergelijken met echte uitgevoerde onderzoeken met ratten kan er duidelijk gezegd worden of het model daadwerkelijk geldig is. Modellen zijn vooral handig om te kijken wat er precies gebeurd bij bepaalde scenario's, zo hoeven we ze niet in het echt uit te voeren, slechts met een simulatie. Het bewijzen van de geldigheid van het model en het visualiseren van verschillende scenario's komen in dit onderzoek aan bod.
 
@@ -268,12 +277,12 @@ parameters <- c(D=20*1000/374.471, ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
 )
 
 # call lsoda and store result in out
-out1 <- ode(y=state,times=t_1, func=Glucocorticoid_func, parms=parameters)
+out1 <- deSolve::ode(y=state,times=t_1, func=Glucocorticoid_func, parms=parameters)
 
 # Maak D = 0
 parameters[1] <- 0
 
-out2 <- ode(y=out1[length(t_1),2:5], times=t_2, func=Glucocorticoid_func, parms=parameters) 
+out2 <- deSolve::ode(y=out1[length(t_1),2:5], times=t_2, func=Glucocorticoid_func, parms=parameters) 
 
 out2[,1] <- out2[,1]+t_1[length(t_1)]
 
