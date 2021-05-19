@@ -44,30 +44,49 @@ Over het algemeen biedt de mediaan een beter idee van de data verdeling, bij ste
 
 ## The software model
 
-- Describe the software tools used, as well as the libraries
-- Describe the software implementation (note: code below is an example)
-```{r}
-library(deSolve)
-# code
-```
-
 ## Model configuration
 
-Explain chosen initial state, parameter values and time sequence. Use tables with values as for example below
-\begin{longtable}[l]{l|l|l}
-\caption{Parameter Values} \\ \hline
-\label{param_table}
-$\textbf{Parameter}$             &$\textbf{Value}$& $\textbf{Unit}$              \\ \hline
-\endhead
-$a$       & 0.08  & $hour^{-1}$         \\ \hline
-$b$       & 0.06  & $hour^{-1}$         \\ \hline
-$c$       & 0.06  & $hour^{-1}$         \\ \hline
-\end{longtable}
+De configuratie ( parameters etc ) is te zien in onderstaand figuur/tabel. Let op. Bij verschillende opgaven worden andere parameters gebruikt, zoals dat D = 39 bij de onderstaande code block in de 'results' sectie.
+
+```{r}
+knitr::include_graphics('Fig3_week2.png')
+```
 
 # Results
 
 De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden
 aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort model kan produceren:
+
+```{r formule_modellen}
+# this function calculates the derivatives and returns it as a list.
+Glucocorticoid_func <- function(t, y, parms) {
+    with(as.list(c(y, parms)),{
+      
+      # Dit model bevat 4 afgeleide functies:
+      # Afgeleide 1:
+  
+      dmRNAr_dt <- ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) - kd_Rm * mRNAr
+  
+      # Afgeleide 2:
+  
+      dR_dt <- ks_r * mRNAr + Rf * kre * DRN - kon * D * R - kd_R * R
+      
+      # Afgeleide 3:
+  
+      dDR_dt <- kon * D * R - kT * DR
+  
+      # Afgeleide 4:
+  
+      dDRN_dt <- kT * DR - kre * DRN
+      
+      return(list(c(dmRNAr_dt, dR_dt, dDR_dt, dDRN_dt)))
+       }
+       )
+}
+```
+
+Question 1.2
+
 
 ```{r}
 par(mfrow = c(2,2) )
@@ -134,6 +153,8 @@ plot(out_03$time, out_03$R,
 lines(data$time, data$Free_receptor, type = "p")
 lines(medians_01$time, medians_01$Free_receptor, type = "l", col= "red")
 ```
+
+Question 1.3
 
 De resultaten van het model (zwart) komen wel overeen met elkaar, aangezien de gefitte lijnen (rode experiment data) een gevolg zijn van de data observaties
 (zwarte model data). Het onderlinge verschil tussen de twee model zwarte model-lijnen is
@@ -216,7 +237,7 @@ par(mfrow=c(2,2))
   plot(out$time,out$DR, ylim = c(0,50), xlab="Time",ylab="drug-receptor complex",type="l",lwd=2)
   plot(out$time,out$DRN, ylim = c(0,50), xlab="Time",ylab="activated receptor complex",type="l",lwd=2)
 ```
-nog x tijdverloop zeggen
+Omdat we de terugkoppelings reactie verwijderd hebben uit de functie ( nieuwe functie is dus Glucocorticoid_func_2.1 ) kan er geen extra receptor mRNAr aangemaakt worden. Dit is ook te zien in de figuur linksbovenin, hij blijft staan op de value 4.74. Dit zal er dus gebeuren als de drugs geen effect hadden op de synthese van mRNAr.
 
 ```{r results}
 data <- read.csv("MPL.csv", na.strings = "NA")
@@ -229,13 +250,15 @@ medians_03 <- subset(medians, dose == 0.3 | dose == 0)
 
 Question 2.2
 
+De D waarde heeft een groot effect op de verloop van de grafieken. Deze stelling kunnen we demonstreren aan de hand van de code hieronder. Wanneer de steady-state bereikt is ( bij ongeveer t = 48 ) veranderen we de D waarde naar 0. 
+
 ```{r}
 par(mfrow=c(2,2))
 state <- c(mRNAr=4.74, R=267, DR=0, DRN=0)
 
 # Creeer tijdsintervallen
-ObservationTimes<-seq(0, 48, by=1)
-ObservationTimes2 <- seq(0, 72, by=1)
+t_1 <-seq(0, 48, by=1)
+t_2 <- seq(0, 72, by=1)
 
 # Model parameters
 parameters <- c(D=20*1000/374.471, ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
@@ -245,14 +268,14 @@ parameters <- c(D=20*1000/374.471, ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
 )
 
 # call lsoda and store result in out
-out1 <- ode(y=state,times=ObservationTimes, func=Glucocorticoid_func, parms=parameters)
+out1 <- ode(y=state,times=t_1, func=Glucocorticoid_func, parms=parameters)
 
 # Maak D = 0
 parameters[1] <- 0
 
-out2 <- ode(y=out1[length(ObservationTimes),2:5], times=ObservationTimes2,   						func=Glucocorticoid_func, parms=parameters) 
+out2 <- ode(y=out1[length(t_1),2:5], times=t_2, func=Glucocorticoid_func, parms=parameters) 
 
-out2[,1] <- out2[,1]+ObservationTimes[length(ObservationTimes)]
+out2[,1] <- out2[,1]+t_1[length(t_1)]
 
 out <- rbind(out1, out2)
 
@@ -264,35 +287,7 @@ plot(out$time,out$R, ylim = c(0,500), xlab="Time",ylab="free receptor density",t
 plot(out$time,out$DR, ylim = c(0,50), xlab="Time",ylab="crug-receptor complex",type="l",lwd=2)
 plot(out$time,out$DRN, ylim = c(0,50), xlab="Time",ylab="activated receptor complex",type="l",lwd=2)
 ```
-
-
-```{r formule_modellen}
-# this function calculates the derivatives and returns it as a list.
-Glucocorticoid_func <- function(t, y, parms) {
-    with(as.list(c(y, parms)),{
-      
-      # Dit model bevat 4 afgeleide functies:
-      # Afgeleide 1:
-  
-      dmRNAr_dt <- ks_Rm * ( 1 - (DRN / (IC50_Rm + DRN))) - kd_Rm * mRNAr
-  
-      # Afgeleide 2:
-  
-      dR_dt <- ks_r * mRNAr + Rf * kre * DRN - kon * D * R - kd_R * R
-      
-      # Afgeleide 3:
-  
-      dDR_dt <- kon * D * R - kT * DR
-  
-      # Afgeleide 4:
-  
-      dDRN_dt <- kT * DR - kre * DRN
-      
-      return(list(c(dmRNAr_dt, dR_dt, dDR_dt, dDRN_dt)))
-       }
-       )
-}
-```
+Hierboven is te zien dat de D waarde inderdaad een grote invloed heeft. bij t = 48 keert elke lijn weer terug naar een nieuwe steady-state, dit is voor nu dus steady-state-second.
 
 
 Question 2.3
@@ -393,15 +388,17 @@ lines(out$time, out$R, col = "black", lwd = 2)
 
 Question 2.4
 
+De code hieronder genereert grafieken die een scenario uitbeeld waarbij de synthese van de receptor geblokeerd word. De parameter die hiervoor veranderd moet worden is ks_r. Dit is omdat deze waarde in de 2e afgeleide de hoeveelheid receptor regelt. Als we ks_r dus op 0 zetten maken we een situatie waarbij er geen synthese meer is van de receptor.
+
 ```{r}
 par(mfrow = c(2,2) )
 
 parameters <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329,
                 kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
-                kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
+                kd_Rm = 0.612, ks_r = 0, D = 53, Rm0 = 4.74,
                 DR = 0, DRN = 0)
 
-t = seq(0, 20, by = 0.1)
+t = seq(0, 48, by = 0.1)
 
 out <- deSolve::ode(times = t, y = state, parms = parameters,
                     func = Glucocorticoid_func, method = "lsoda")
@@ -409,14 +406,16 @@ out <- deSolve::ode(times = t, y = state, parms = parameters,
 
 out <- as.data.frame(out)
 
-plot(out$time, out$mRNAr, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
-plot(out$time, out$R, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
-plot(out$time, out$DR, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
-plot(out$time, out$DRN, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
+plot(out$time,out$mRNAr,ylim = c(0,5), xlab="Time",ylab="receptor mRNA",type="l",lwd=2)
+plot(out$time,out$R, ylim = c(0,300), xlab="Time",ylab="free receptor density",type="l",lwd=2)
+plot(out$time,out$DR, ylim = c(0,50), xlab="Time",ylab="drug-receptor complex",type="l",lwd=2)
+plot(out$time,out$DRN, ylim = c(0,50), xlab="Time",ylab="activated receptor complex",type="l",lwd=2)
 ```
-
+Voornamelijk in de figuren onderaan is te zien dat de drug- en activated receptor dichtheid vrij snel daalt omdat de synthese van de receptor geblokeerd is. Als je dit vergelijkt met de normale situatie is er zeker een verschil.
 
 Question 2.5
+
+In dit scenario kijken we naar wat er gebeurt als we de parameters, ks_rm en kd_rm vergroten en verkleinen. We testen dit met de volgende 'fold changes': / 2, / 5, x 2 en x 5. Hier onder is de code te zien die deze situatie tot leven brengt:
 
 ```{r}
 par(mfrow = c(2,2) )
@@ -491,12 +490,7 @@ lines(out_2$time, out_2$DRN, lwd = 2, col = "red")
 lines(out_3$time, out_3$DRN, lwd = 2, col = "blue")
 lines(out_4$time, out_4$DRN, lwd = 2, col = "purple")
 ```
-
-- Describe what can be seen in such way that it leads to an answer to your research questions
-- Give your figures a number and a descriptive title.
-- Provide correct axis labels (unit and quantity), legend and caption.
-- Always refer to and discuss your figures and tables in the text - they never stand alone.
-
+In de plotjes hierboven is vooral bij de figuur linksboven een duidelijk verschil te zien tussen de fold changes. Dus de receptor mRNA hangt het meest af van de ks_rm & kd_rm parameters af in vergelijking met de andere figuren. De kleuren duiden de hoeveelheid change aan: zwart = x 5, rood = x 2, blauw = / 2 en paars is / 5.
 
 # Discussion and Conclusion
 ## Discussion
