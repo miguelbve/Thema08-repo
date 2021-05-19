@@ -18,12 +18,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Introduction
-Introduction of the research and introduction research questions
+Zal een model altijd kloppen? Wanneer we de model data vergelijken met echte uitgevoerde onderzoeken met ratten kan er duidelijk gezegd worden of het model daadwerkelijk geldig is. Modellen zijn vooral handig om te kijken wat er precies gebeurd bij bepaalde scenario's, zo hoeven we ze niet in het echt uit te voeren, slechts met een simulatie. Het bewijzen van de geldigheid van het model en het visualiseren van verschillende scenario's komen in dit onderzoek aan bod.
 
 ## Goal
-  - Describe Goal (not the educational goal but the research goal)
-  - Describe how you reach the goal (e.g. make model and figures, use different setting)
-  - formulate hypothesis
+
+Het doel is nu voornamelijk om te bekijken wat er gebeurt met de grafieken als parameters verandert worden ( oftewel er moeten verschillende scenario's gerunt worden ). Ook zal de geldigheid van het model op de proef gesteld worden.
 
 ## Theory
 
@@ -199,7 +198,8 @@ Glucocorticoid_func_2.1 <- function(t, y, parms) {
       # Dit model bevat 4 afgeleide functies:
       # Afgeleide 1:
       
-      dmRNAr_dt <- ks_Rm - kd_Rm * mRNAr
+      dmRNAr_dt <- ks_Rm - kd_Rm * mRNAr # * (DRN / (IC5_Rm + DRN)) This has been removed to answer
+                                         # the research question
   
       # Afgeleide 2:
   
@@ -237,7 +237,7 @@ par(mfrow=c(2,2))
   plot(out$time,out$DR, ylim = c(0,50), xlab="Time",ylab="drug-receptor complex",type="l",lwd=2)
   plot(out$time,out$DRN, ylim = c(0,50), xlab="Time",ylab="activated receptor complex",type="l",lwd=2)
 ```
-Omdat we de terugkoppelings reactie verwijderd hebben uit de functie ( nieuwe functie is dus Glucocorticoid_func_2.1 ) kan er geen extra receptor mRNAr aangemaakt worden. Dit is ook te zien in de figuur linksbovenin, hij blijft staan op de value 4.74. Dit zal er dus gebeuren als de drugs geen effect hadden op de synthese van mRNAr.
+Omdat we de terugkoppelings reactie ( * (DRN / (IC5_Rm + DRN)) ) verwijderd hebben uit de functie ( nieuwe functie is dus Glucocorticoid_func_2.1 ) kan er geen extra receptor mRNAr aangemaakt worden. Dit is ook te zien in de figuur linksbovenin, hij blijft staan op de value 4.74. Dit zal er dus gebeuren als de drugs geen effect hadden op de synthese van mRNAr.
 
 ```{r results}
 data <- read.csv("MPL.csv", na.strings = "NA")
