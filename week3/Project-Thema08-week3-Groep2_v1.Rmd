@@ -383,6 +383,8 @@ lines(out$time, out$R, col = "black", lwd = 2)
 Question 2.4
 
 ```{r}
+par(mfrow = c(2,2) )
+
 parameters <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329,
                 kT = 0.63, kre = 0.57, Rf = 0.49, kd_R = 0.0572,
                 kd_Rm = 0.612, ks_r = 3.22, D = 53, Rm0 = 4.74,
@@ -397,12 +399,16 @@ out <- deSolve::ode(times = t, y = state, parms = parameters,
 out <- as.data.frame(out)
 
 plot(out$time, out$mRNAr, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
+plot(out$time, out$R, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
+plot(out$time, out$DR, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
+plot(out$time, out$DRN, type = "l", lwd = 3, xlab = "Time in hours", ylab = "nmol/L")
 ```
 
 
 Question 2.5
 
 ```{r}
+par(mfrow = c(2,2) )
 t <- seq(0, 50, by = 0.1)
 
 parameters_1 <- c(ks_Rm = 2.90/5, IC50_Rm = 26.2, kon = 0.00329,
@@ -443,17 +449,36 @@ out_3 <- as.data.frame(out_3)
 out_4 <- as.data.frame(out_4)
 
 plot(out_1$time, out_1$mRNAr,
-     main="Rate of production of mRNA scenarios",
-     ylab=c("nmol/L"), xlab=c(" Time in hours"),
+     ylab=c("Receptor mRNA"), xlab=c(" Time in hours"),
      type='l', lwd = 2, xlim= c(0,50), ylim= c(5, 0))
 
 lines(out_2$time, out_2$mRNAr, lwd = 2, col = "red")
 lines(out_3$time, out_3$mRNAr, lwd = 2, col = "blue")
 lines(out_4$time, out_4$mRNAr, lwd = 2, col = "purple")
 
-legend(39, 0, legend=c("Simulation-1", "Simulation-2", "Simulation-3", "Simulation-4"),
-       col=c("black", "red", "blue", "purple"), lty=1, cex=0.8,
-       title="Legend", text.font=4, bg='gray')
+plot(out_1$time, out_1$R,
+     ylab=c("Free receptor density"), xlab=c(" Time in hours"),
+     type='l', lwd = 2, xlim= c(0,50), ylim= c(0, 400))
+
+lines(out_2$time, out_2$R, lwd = 2, col = "red")
+lines(out_3$time, out_3$R, lwd = 2, col = "blue")
+lines(out_4$time, out_4$R, lwd = 2, col = "purple")
+
+plot(out_1$time, out_1$DR,
+     ylab=c("Drug-receoptor complex"), xlab=c(" Time in hours"),
+     type='l', lwd = 2, xlim= c(0,50), ylim= c(50, -50))
+
+lines(out_2$time, out_2$DR, lwd = 2, col = "red")
+lines(out_3$time, out_3$DR, lwd = 2, col = "blue")
+lines(out_4$time, out_4$DR, lwd = 2, col = "purple")
+
+plot(out_1$time, out_1$DRN,
+     ylab=c("Activated receptor complex"), xlab=c(" Time in hours"),
+     type='l', lwd = 2, xlim= c(0,50), ylim= c(50, -50))
+
+lines(out_2$time, out_2$DRN, lwd = 2, col = "red")
+lines(out_3$time, out_3$DRN, lwd = 2, col = "blue")
+lines(out_4$time, out_4$DRN, lwd = 2, col = "purple")
 ```
 
 - Describe what can be seen in such way that it leads to an answer to your research questions
