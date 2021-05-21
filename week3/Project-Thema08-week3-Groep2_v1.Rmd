@@ -1,16 +1,14 @@
 ---
-title: 'Thema08-week1-mRNA '
-author: "Miguel Botter van Elburg & Jurrien de Jong"
+title: '  Week 2: Glucocorticoid receptor dynamica '
+author: "Jurrien de Jong en Miguel Botter van Elburg"
 date: "`r Sys.Date()`"
 output:
-  pdf_document:
-    number_sections: yes
-  html_document:
-    df_print: paged
+  html_document: default
 header-includes:
 - \usepackage{longtable}
 - \usepackage{hyperref}
 linkcolor: blue
+bibliography: bibliography.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -58,7 +56,7 @@ knitr::include_graphics('Fig2_week2.jpg')
 
 De configuratie ( parameters etc ) is te zien in onderstaand figuur/tabel. Let op. Bij verschillende opgaven worden andere parameters gebruikt, zoals dat D = 39 bij de onderstaande code block in de 'results' sectie.
 
-```{r}
+```{r chunk_2}
 knitr::include_graphics('Fig3_week2.png')
 ```
 
@@ -97,7 +95,7 @@ Glucocorticoid_func <- function(t, y, parms) {
 
 Question 1.2
 
-```{r prep}
+```{r chunck_3}
 data <- read.csv("MPL.csv", na.strings = "NA")
 
 medians <- aggregate(data[,c("MPL_conc","mRNA","Free_receptor")],list(data$dose,data$time), median, na.rm=T)
@@ -106,7 +104,7 @@ medians_01 <- subset(medians, dose == 0.1 | dose == 0)
 medians_03 <- subset(medians, dose == 0.3 | dose == 0)
 ```
 
-```{r}
+```{r chunk_4}
 par(mfrow = c(2,2) )
 
 # Set initial values
@@ -204,7 +202,7 @@ dus...
 oplossing:
 dus de parameters DRN, IC5_Rm, DRN zijn nul en de vergelijking kan dus verwijderd worden.
 
-```{r}
+```{r chunk_5}
 Glucocorticoid_func_2.1 <- function(t, y, parms) {
     with(as.list(c(y, parms)),{
       
@@ -254,7 +252,7 @@ Omdat we de terugkoppelings reactie ( * (DRN / (IC5_Rm + DRN)) ) verwijderd hebb
 
 De D waarde heeft een groot effect op de verloop van de grafieken. Deze stelling kunnen we demonstreren aan de hand van de code hieronder. Wanneer de steady-state bereikt is ( bij ongeveer t = 48 ) veranderen we de D waarde naar 0. 
 
-```{r}
+```{r chunk_6}
 par(mfrow=c(2,2))
 state <- c(mRNAr=4.74, R=267, DR=0, DRN=0)
 
@@ -292,7 +290,7 @@ plot(out$time,out$DRN, ylim = c(0,50), xlab="Time",ylab="activated receptor comp
 Hierboven is te zien dat de D waarde inderdaad een grote invloed heeft. bij t = 48 keert elke lijn weer terug naar een nieuwe steady-state, dit is voor nu dus steady-state-second.
 
 
-```{r}
+```{r models}
 par(mfrow = c(1,2) )
 t <- seq(0, 100, by = 0.1)
 
@@ -387,7 +385,7 @@ lines(out$time, out$R, col = "black", lwd = 2)
 
 kre is de eerste orde snelheidsconstanten voor translocatie van het MPL-receptor complex naar de nucleus en ‘recovery’ van de receptor van de celkern naar het cytosol. Aangezien kon de tweede orde snelheidsconstante voor vorming van het MPL-receptor complex betreft, is het logisch dat bij veranderingen van deze parameters de mRNA transcriptie niet beinvloedt wordt, daarnaast is dat ook te zien in het schema mrna_dynamics.
 
-```{r}
+```{r chunk_7}
 knitr::include_graphics("mrna_dynamics.png")
 ```
 Hierin is duidelijk te zien dat ksr en kon pas na de mRNAr zich in het biologische proces mengt omtrent het corticoïde model.
@@ -395,7 +393,7 @@ Hierin is duidelijk te zien dat ksr en kon pas na de mRNAr zich in het biologisc
 
 De code hieronder genereert grafieken die een scenario uitbeelt waarbij de synthese van de receptor geblokeerd word. De parameter die hiervoor veranderd moet worden is ks_r. Dit is omdat deze waarde in de 2e afgeleide de hoeveelheid receptor regelt. Als we ks_r dus op 0 zetten maken we een situatie waarbij er geen synthese meer is van de receptor.
 
-```{r}
+```{r chunk_8}
 par(mfrow = c(2,2) )
 
 parameters <- c(ks_Rm = 0, IC50_Rm = 26.2, kon = 0.00329,
@@ -420,7 +418,7 @@ Voornamelijk in de figuren onderaan is te zien dat de drug- en activated recepto
 
 In dit scenario kijken we naar wat er gebeurt als we de parameters, ks_rm en kd_rm vergroten en verkleinen. We testen dit met de volgende 'fold changes': / 2, / 5, x 2 en x 5. Hier onder is de code te zien die deze situatie tot leven brengt:
 
-```{r}
+```{r chunk_9}
 par(mfrow = c(2,2) )
 t <- seq(0, 50, by = 0.1)
 
