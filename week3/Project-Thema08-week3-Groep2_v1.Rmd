@@ -35,22 +35,33 @@ Het doel is nu voornamelijk om te bekijken wat er gebeurt met de grafieken als p
 
 ## Theory
 
-- Describe biological model
-- Picture of the biological model
+Bij een corticosteroïden behandeling wordt een medicijn (hormoon corticosteroïd) in een 
+gewricht, peesschede of rond de zenuw gebracht. De corticosteroïden hebben een 
+ontstekingsremmende werking en geven de geprikkelde zenuwen rust [@A].
 
-```{r, echo=FALSE, out.width='95%'}
-#knitr::include_graphics('example.png')
-```
-Give an explanation of the model with citations of source \cite{Soertaert10} (replace this with actual source)
-and formula explanation
+Enkele voorbeelden van corticosteroïden zijn; Predniso(lo)n, Dexamethason, (Hydro)cortison, 
+Triamcinolon, Betametason, Fluticason [@B].
 
-$$\frac{\delta R}{\delta t} = -r * R + m $$
-Describe each element and the transformations
+De werking van corticosteroïden verschilt. Dit geldt voor sterkte, toedieningsvorm en mate van 
+bijwerkingen. Het kan voorgeschreven worden als stootkuur (korte periode een hoge dosering), 
+maar ook langdurig als onderhoudsbehandeling. In het geval van longpatiënten worden 
+corticosteroïden gebruikt als ontstekingsremmer en worden ze ingezet bij allergische reacties op 
+uitwendige prikkels (vb: hooikoorts, eczeem) [@C].
 
 # Methods
 Over het algemeen biedt de mediaan een beter idee van de data verdeling, bij steekproefproefgemiddelden mits zij een normaal verdeling volgen. Aangezien de mediaan robuuster is dan een gemiddelde (mean), want het is minder afhankelijk van uitbijters/uitschieters, omdat het het middelste punt is van een gesorteerde reeks cijfers/getallen/gegevens en de scores niet worden gedeeld door het aantal n. Een goede illustratie zegt meer dan duizend woorden, om die reden is het beter om een grafiek van de mediaan erbij te plotten.
 
 ## The software model
+De glucocorticoiden zullen met name meerdere ontstekings geactiveerde genen uitzetten, die 
+coderen voor cytokines, chemokines, hechtings moleculen van ontstoken enzymen en receptors
+(zie Fig 1). Deze genen zijn aangezet in de luchtwegen door pro-ontstekings transcriptie 
+factoren, zoals nuclear factor-κB (NF-κB) en activator protein-1 (AP-1), die normaal gesproken 
+beide worden geactiveerd in de buurt van asthma en COPD ontstekingen (zie Fig 2).
+
+```{r chunk_1}
+knitr::include_graphics('Fig1_week2.jpg')
+knitr::include_graphics('Fig2_week2.jpg')
+```
 
 ## Model configuration
 
