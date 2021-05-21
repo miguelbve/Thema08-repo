@@ -17,15 +17,6 @@ linkcolor: blue
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r prep}
-data <- read.csv("MPL.csv", na.strings = "NA")
-
-medians <- aggregate(data[,c("MPL_conc","mRNA","Free_receptor")],list(data$dose,data$time), median, na.rm=T)
-names(medians)[1:2] <- c("dose","time")
-medians_01 <- subset(medians, dose == 0.1 | dose == 0)
-medians_03 <- subset(medians, dose == 0.3 | dose == 0)
-```
-
 # Introduction
 Zal een model altijd kloppen? Wanneer we de model data vergelijken met echte uitgevoerde onderzoeken met ratten kan er duidelijk gezegd worden of het model daadwerkelijk geldig is. Modellen zijn vooral handig om te kijken wat er precies gebeurd bij bepaalde scenario's, zo hoeven we ze niet in het echt uit te voeren, slechts met een simulatie. Het bewijzen van de geldigheid van het model en het visualiseren van verschillende scenario's komen in dit onderzoek aan bod.
 
@@ -106,6 +97,14 @@ Glucocorticoid_func <- function(t, y, parms) {
 
 Question 1.2
 
+```{r prep}
+data <- read.csv("MPL.csv", na.strings = "NA")
+
+medians <- aggregate(data[,c("MPL_conc","mRNA","Free_receptor")],list(data$dose,data$time), median, na.rm=T)
+names(medians)[1:2] <- c("dose","time")
+medians_01 <- subset(medians, dose == 0.1 | dose == 0)
+medians_03 <- subset(medians, dose == 0.3 | dose == 0)
+```
 
 ```{r}
 par(mfrow = c(2,2) )
