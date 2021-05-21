@@ -1,5 +1,5 @@
 ---
-title: '  Week 2: Glucocorticoid receptor dynamica '
+title: '  Week 3: Detailed analysis of the model'
 author: "Jurrien de Jong en Miguel Botter van Elburg"
 date: "`r Sys.Date()`"
 output:
@@ -63,7 +63,7 @@ knitr::include_graphics('Fig3_week2.png')
 # Results
 
 De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden
-aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort model kan produceren:
+aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort model kan produceren. Dit model repliceert de werking van het corticosteroiden systeem:
 
 ```{r formule_modellen}
 # this function calculates the derivatives and returns it as a list.
@@ -93,7 +93,7 @@ Glucocorticoid_func <- function(t, y, parms) {
 }
 ```
 
-Question 1.2
+Zoals ook bij het kopje 'Methods' is uitgelegd bied het gebruiken van de mediaan van een dataset een beter idee van de verdeling hiervan. Dit kan gebruikt worden om een aantal onderzoeksvragen te beantwoorden. Allereerst wordt de data ingelezen, hiervan worden dan 2 aparte mediaan vectoren gemaakt zoals te zien is in onderstaande code:
 
 ```{r chunck_3}
 data <- read.csv("MPL.csv", na.strings = "NA")
@@ -103,6 +103,8 @@ names(medians)[1:2] <- c("dose","time")
 medians_01 <- subset(medians, dose == 0.1 | dose == 0)
 medians_03 <- subset(medians, dose == 0.3 | dose == 0)
 ```
+
+Als de mediaan punten geplot worden samen met de orginele data kan er goed gekeken worden naar een verschil. Ook kan er bepaald worden of het model dan nog wel geldig is ( experiment vs model ). Hieronder is de code te zien die de experimentdata met daarvan de mediaan punten ( als rode lijn ) en de model lijnen plot:
 
 ```{r chunk_4}
 par(mfrow = c(2,2) )
@@ -169,6 +171,7 @@ plot(out_03$time, out_03$R,
 lines(data$time, data$Free_receptor, type = "p")
 lines(medians_01$time, medians_01$Free_receptor, type = "l", col= "red")
 ```
+
 De resultaten van het model (zwart) komen wel overeen met elkaar, aangezien de gefitte lijnen (rode experiment data) een gevolg zijn van de data observaties
 (zwarte model data). Het onderlinge verschil tussen de twee model zwarte model-lijnen is
 mogelijk te verklaren door het onderlinge verschil in condities van model groepen (sample groups).
@@ -248,6 +251,7 @@ par(mfrow=c(2,2))
   plot(out$time,out$DR, ylim = c(0,50), xlab="Time",ylab="drug-receptor complex",type="l",lwd=2)
   plot(out$time,out$DRN, ylim = c(0,50), xlab="Time",ylab="activated receptor complex",type="l",lwd=2)
 ```
+
 Omdat we de terugkoppelings reactie ( * (DRN / (IC5_Rm + DRN)) ) verwijderd hebben uit de functie ( nieuwe functie is dus Glucocorticoid_func_2.1 ) kan er geen extra receptor mRNAr aangemaakt worden. Dit is ook te zien in de figuur linksbovenin, hij blijft staan op de value 4.74. Dit zal er dus gebeuren als de drugs geen effect hadden op de synthese van mRNAr.
 
 De D waarde heeft een groot effect op de verloop van de grafieken. Deze stelling kunnen we demonstreren aan de hand van de code hieronder. Wanneer de steady-state bereikt is ( bij ongeveer t = 48 ) veranderen we de D waarde naar 0. 
@@ -268,24 +272,22 @@ parameters <- c(D=20*1000/374.471, ks_Rm = 2.90, IC50_Rm = 26.2, kon = 0.00329,
 )
 
 # call lsoda and store result in out
-out1 <- deSolve::ode(y=state,times=t_1, func=Glucocorticoid_func, parms=parameters)
+out1 <- deSolve::ode(y = state, times = t_1, func = Glucocorticoid_func, parms = parameters)
 
 # Maak D = 0
 parameters[1] <- 0
 
-out2 <- deSolve::ode(y=out1[length(t_1),2:5], times=t_2, func=Glucocorticoid_func, parms=parameters) 
-
-out2[,1] <- out2[,1]+t_1[length(t_1)]
+out2 <- deSolve::ode(y = out1[length(t_1), 2:5], times = t_2, func = Glucocorticoid_func, parms = parameters) 
+out2[,1] <- out2[,1] + t_1[length(t_1)]
 
 out <- rbind(out1, out2)
 
-out<-as.data.frame(out)
-out$tot <- out$R + out$DR + out$DRN
+out <- as.data.frame(out)
 
-plot(out$time,out$mRNAr,ylim = c(0,5), xlab="Time",ylab="receptor mRNA",type="l",lwd=2)
-plot(out$time,out$R, ylim = c(0,500), xlab="Time",ylab="free receptor density",type="l",lwd=2)
-plot(out$time,out$DR, ylim = c(0,50), xlab="Time",ylab="crug-receptor complex",type="l",lwd=2)
-plot(out$time,out$DRN, ylim = c(0,50), xlab="Time",ylab="activated receptor complex",type="l",lwd=2)
+plot(out$time, out$mRNAr, ylim = c(0,5), xlab="Time", ylab="receptor mRNA",type="l", lwd=2)
+plot(out$time, out$R, ylim = c(0,500), xlab="Time", ylab="free receptor density",type="l", lwd=2)
+plot(out$time, out$DR, ylim = c(0,50), xlab="Time", ylab="crug-receptor complex",type="l", lwd=2)
+plot(out$time, out$DRN, ylim = c(0,50), xlab="Time", ylab="activated receptor complex",type="l", lwd=2)
 ```
 Hierboven is te zien dat de D waarde inderdaad een grote invloed heeft. bij t = 48 keert elke lijn weer terug naar een nieuwe steady-state, dit is voor nu dus steady-state-second.
 
@@ -504,4 +506,4 @@ Om het model preciezer te maken zou er meer achtergrond informatie moeten worden
 Al met al is, middels het testen, en door verschillende parameters te gebruiken plus verschillende geproduceerde resultaten, het model wel significant betrouwbaar en praktisch toepasbaar voor nader onderzoek.
 
 ## General conclusion and perspective
-Het doel van deze opdracht was uitbouwen op de eigen-implementatie van het corticoide model, door additionele simulaties uit te voeren. Om deze tot slot in detail te vergelijken met andere resultaten. Vanuit deze progressie is het belangrijk om de onderzoeksresultaten te valideren, dat zal gebeuren in de volgende opdracht. Waar we 'peer reviiews' zullen houden.
+Het doel van deze opdracht was uitbouwen op de eigen-implementatie van het corticoide model, door additionele simulaties uit te voeren. Om deze tot slot in detail te vergelijken met andere resultaten. Vanuit deze progressie is het belangrijk om de onderzoeksresultaten te valideren, dat zal gebeuren in de volgende opdracht. Waar we 'peer reviews' zullen houden.
