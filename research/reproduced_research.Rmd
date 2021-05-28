@@ -28,6 +28,8 @@ Drug concentration in heart tissue should be of particular interest regarding al
   - Describe Goal (not the educational goal but the research goal)
   - Describe how you reach the goal (e.g. make model and figures, use different setting)
   - formulate hypothesis
+  
+This research aims to give a good understanding of the drug concentration over time in different tissue types of the heart. A PBPK (physiologically-based pharmacokinetic) approach has hardly been used in the modeling of drug concentration in various locations within heart tissue so this might be a great opportunity to accelerate research into the role of drugs on many things heart related. In order to 
 
 ## Theory
 
@@ -40,15 +42,14 @@ Drug concentration in heart tissue should be of particular interest regarding al
 Give an explanation of the model with citations of source \cite{Soertaert10} (replace this with actual source)
 and formula explanation
 
-$$\frac{\delta R}{\delta t} = -r * R + m $$
 Describe each element and the transformations
 
 # Methods
 
 ## The software model
 
-- Describe the software tools used, as well as the libraries
-- Describe the software implementation (note: code below is an example)
+The tool used for this experiment is called deSolve. This is a R-package which can help solve ODE, or ordinary differential equations. A few parameters were gotten from another research which used a program called: "Simcyp Simulator" to create a PBPK model. This model can predict certain values for tissues like the Kp which is pretty useful in this case. The research talked about just now has also used a package called FME, which performs a model fit based on algorithms. Equation 4 also plays a crucial role in this step.
+
 ```{r}
 library(deSolve)
 # code
@@ -56,16 +57,7 @@ library(deSolve)
 
 ## Model configuration
 
-Explain chosen initial state, parameter values and time sequence. Use tables with values as for example below
-\begin{longtable}[l]{l|l|l}
-\caption{Parameter Values} \\ \hline
-\label{param_table}
-$\textbf{Parameter}$             &$\textbf{Value}$& $\textbf{Unit}$              \\ \hline
-\endhead
-$a$       & 0.08  & $hour^{-1}$         \\ \hline
-$b$       & 0.06  & $hour^{-1}$         \\ \hline
-$c$       & 0.06  & $hour^{-1}$         \\ \hline
-\end{longtable}
+Chosen parameter- and initial values can be found in the tables below. Do please note that each table corresponds to their own model respectively. 
 
 
 # Results
