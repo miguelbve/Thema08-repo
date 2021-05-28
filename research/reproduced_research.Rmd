@@ -31,24 +31,27 @@ Drug concentration in heart tissue should be of particular interest regarding al
   
 This research aims to give a good understanding of the drug concentration over time in different tissue types of the heart. A PBPK (physiologically-based pharmacokinetic) approach has hardly been used in the modeling of drug concentration in various locations within heart tissue so this might be a great opportunity to accelerate research into the role of drugs on many things heart related. In order to 
 
+... This part is work in progress...
+
 ## Theory
 
-- Describe biological model
-- Picture of the biological model
+In order to understand the model, the concept of a PBPK model needs to be clear. Simpy put, PBPK is a computer modeling approach that incorporates blood flow and tissue composition of organs to define the pharmacokinetics (PK) of drugs. Alterations in PK properties, such as, absorption, distribution, metabolism, and excretion, can have a substantial impact on achieving the desired therapeutic concentration of a drug. PBPK is a very powerful tool, so a lot of computing power is necessary. The best use for a PBPK model is drug researc, which is the reason this type of model will be used in this research. It can also be, for instance, used by the Pharmaceutical Industry.
 
-```{r, echo=FALSE, out.width='95%'}
-#knitr::include_graphics('example.png')
-```
-Give an explanation of the model with citations of source \cite{Soertaert10} (replace this with actual source)
-and formula explanation
+The equations which are part of the heart PBPK model are as follows:
 
-Describe each element and the transformations
+-
+-
+-
+
+... This part is work in progress...
 
 # Methods
 
 ## The software model
 
 The tool used for this experiment is called deSolve. This is a R-package which can help solve ODE, or ordinary differential equations. A few parameters were gotten from another research which used a program called: "Simcyp Simulator" to create a PBPK model. This model can predict certain values for tissues like the Kp which is pretty useful in this case. The research talked about just now has also used a package called FME, which performs a model fit based on algorithms. Equation 4 also plays a crucial role in this step.
+
+... This part is work in progress...
 
 ```{r}
 library(deSolve)
@@ -59,6 +62,7 @@ library(deSolve)
 
 Chosen parameter- and initial values can be found in the tables below. Do please note that each table corresponds to their own model respectively. 
 
+... This part is work in progress...
 
 # Results
 Introduction of results, how does it answer your research questions.
