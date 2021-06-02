@@ -20,25 +20,21 @@ knitr::opts_chunk$set(echo = TRUE)
 # Introduction
 Introduction of the research and introduction research questions
 
-The effect of plasma concentration should be related to the concentration of the test substance (so it implies the delayed ventricular regulation). The concentration of the test substance is highly effected by the extent of the delayed ventricular repolarization. Since the plasma concentration is most commonly used as the effective concentration. This research is interested in the ... (mean or the most frequent concentration) ... from drug where it meet cardiac ion channels within heart tissue.
+The effect of plasma concentration should be related to the concentration of the test substance (so it implies the delayed ventricular regulation). The concentration of the test substance is highly effected by the extent of the delayed ventricular repolarization. Since the plasma concentration is most commonly used as the effective concentration. This research is interested in the mean concentration from drug where it meet cardiac ion channels within heart tissue.
 
-Drug concentration in heart tissue should be of particular interest regarding all possible sites where the drug might meet cardiac ion channels. It should gain even more prominence in light of reports that note that myocardial drug concentration better correlates with a change in QT length4,5 and that the tissue drug concentration profiles do not necessarily correlate with those in plasma.
+Drug concentration in heart tissue should be of particular interest regarding all possible sites where the drug might meet cardiac ion channels.
 
 ## Goal
   - Describe Goal (not the educational goal but the research goal)
   - Describe how you reach the goal (e.g. make model and figures, use different setting)
   - formulate hypothesis
   
-This research aims to give a good understanding of the drug concentration over time in different tissue types of the heart. A PBPK (physiologically-based pharmacokinetic) approach has hardly been used in the modeling of drug concentration in various locations within heart tissue so this might be a great opportunity to accelerate research into the role of drugs on many things heart related. In order to 
-
-... This part is work in progress...
+This research aims to give a good understanding of the drug concentration over time in different tissue types of the heart. A PBPK (physiologically-based pharmacokinetic) approach has hardly been used in the modeling of drug concentration in various locations within heart tissue so this might be a great opportunity to accelerate research into the role of drugs on many things heart related. In order to get a better understanding of this research, deSolve will be issued and model configurations should be set. In addition defined equatuions will be solved to enlarge the knowledge about the drug concentration. Therefore the Null-hypothesis; there is no significant difference between different sample groups, will be tested. If that's not the case then the alternative hypothesis is assumed to be true.
 
 ## Theory
 
 In order to understand the model, the concept of a PBPK model needs to be clear. Simpy put, PBPK is a computer modeling approach that incorporates blood flow and tissue composition of organs to define the pharmacokinetics (PK) of drugs. Alterations in PK properties, such as, absorption, distribution, metabolism, and excretion, can have a substantial impact on achieving the desired therapeutic concentration of a drug. PBPK is a very powerful tool, so a lot of computing power is necessary. The best use for a PBPK model is drug research, which is the reason this type of model will be used in this research. It can also be, for instance, used by the Pharmaceutical Industry. The essention of integral calculations results in surface area of the graph, which is a useful application for dynamic models like the PBPK model.
 
-
-de uitkomst van integraalberekningen geeft een oppervlakte van de bijbeh
 
 The equations which are part of the heart PBPK model are as follows:(UITLEG EQUATIONS)
 
@@ -71,6 +67,8 @@ Chosen parameter- and initial values can be found in the tables below. Do please
 
 # Results
 Introduction of results, how does it answer your research questions.
+
+[MIGUEL]
 ```{r}
 #plot(out)
 #code to generate figures with title, subscripts, legenda etc
