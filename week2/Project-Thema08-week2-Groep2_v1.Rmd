@@ -73,8 +73,7 @@ knitr::include_graphics('Fig3_week2.png')
 
 
 # Results
-De vragen die opkomen tijdens het onderzoeken van een biologisch systeem zal je kunnen beantwoorden
-aan de hand van een gecreerd model. Hieronder is de code te zien dat zo'n soort model kan produceren:
+De vragen die opkomen tijdens het onderzoeken van een biologisch systeem worden in dit hoofdstuk behandelt. Hieronder is de code te zien die zo'n soort model kan produceren:
 
 ```{r chunck_2}
 # Change the MPL value from mol/L to nmol/L

@@ -39,8 +39,9 @@ In order to understand the model, the concept of a PBPK model needs to be clear.
 The equations which are part of the heart PBPK model are as follows:(UITLEG EQUATIONS)
 
 (1) - Vmax[mg/h] = Vmax_pmol x CYP x MPPGL x Wli x MW x 60 / 10^9
-$$\frac{fu{_p}}{BP}*CLu{_i}$$
+$${V{_m}}{_a}{_x}{_p}{_m}{_o}{_l} *CYP * MPPGL * W{_l}{_i} *MW * 60 / 10^9$$
 (2) - CLu int2C8 = Cl int2C8 x fumic x ISEF2C8
+$${CLU{_i}}{_n}{_t}{_2}{_C}{_2}{_8} *FU{_m}{_i}{_c} * ISEF{_2}{_c}{_8}$$
 (3) - $$\frac{\frac{fu{_p}}{BP}*CLu{_i}{_n}{_t}*Q{_h}{_e}}{Q{_h}{_e}+{\frac{fu{_p}}{BP}*CLu{_i}{_n}{_t}}}$$
 
 
@@ -66,11 +67,9 @@ Chosen parameter- and initial values can be found in the tables below. Do please
 ... This part is work in progress...
 
 # Results
-Introduction of results, how does it answer your research questions.
-
-
-[MIGUEL]
+The structure representing the simulation of the PBPK model is shown here.
 ```{r}
+print("Hier komt die code!")
 #plot(out)
 #code to generate figures with title, subscripts, legenda etc
 ```
