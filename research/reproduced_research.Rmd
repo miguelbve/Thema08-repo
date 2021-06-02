@@ -35,13 +35,17 @@ This research aims to give a good understanding of the drug concentration over t
 
 ## Theory
 
-In order to understand the model, the concept of a PBPK model needs to be clear. Simpy put, PBPK is a computer modeling approach that incorporates blood flow and tissue composition of organs to define the pharmacokinetics (PK) of drugs. Alterations in PK properties, such as, absorption, distribution, metabolism, and excretion, can have a substantial impact on achieving the desired therapeutic concentration of a drug. PBPK is a very powerful tool, so a lot of computing power is necessary. The best use for a PBPK model is drug researc, which is the reason this type of model will be used in this research. It can also be, for instance, used by the Pharmaceutical Industry.
+In order to understand the model, the concept of a PBPK model needs to be clear. Simpy put, PBPK is a computer modeling approach that incorporates blood flow and tissue composition of organs to define the pharmacokinetics (PK) of drugs. Alterations in PK properties, such as, absorption, distribution, metabolism, and excretion, can have a substantial impact on achieving the desired therapeutic concentration of a drug. PBPK is a very powerful tool, so a lot of computing power is necessary. The best use for a PBPK model is drug research, which is the reason this type of model will be used in this research. It can also be, for instance, used by the Pharmaceutical Industry. The essention of integral calculations results in surface area of the graph, which is a useful application for dynamic models like the PBPK model.
 
-The equations which are part of the heart PBPK model are as follows:
+
+de uitkomst van integraalberekningen geeft een oppervlakte van de bijbeh
+
+The equations which are part of the heart PBPK model are as follows:(UITLEG EQUATIONS)
 
 (1) - Vmax[mg/h] = Vmax_pmol x CYP x MPPGL x Wli x MW x 60 / 10^9
+$$\frac{}$$
 (2) - CLu int2C8 = Cl int2C8 x fumic x ISEF2C8
-(3) - $\frac{\frac{fu{_p}}{BP}*CLu{_i}{_n}{_t}*Q{_h}{_e}}{Q{_h}{_e}+{\frac{fu{_p}}{BP}*CLu{_i}{_n}{_t}}}$
+(3) - $$\frac{\frac{fu{_p}}{BP}*CLu{_i}{_n}{_t}*Q{_h}{_e}}{Q{_h}{_e}+{\frac{fu{_p}}{BP}*CLu{_i}{_n}{_t}}}$$
 
 
 ... This part is work in progress...

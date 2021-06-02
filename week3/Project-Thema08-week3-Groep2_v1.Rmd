@@ -19,7 +19,6 @@ knitr::opts_chunk$set(echo = TRUE)
 Zal een model altijd kloppen? Wanneer we de model data vergelijken met echte uitgevoerde onderzoeken met ratten kan er duidelijk gezegd worden of het model daadwerkelijk geldig is. Modellen zijn vooral handig om te kijken wat er precies gebeurd bij bepaalde scenario's, zo hoeven we ze niet in het echt uit te voeren, slechts met een simulatie. Het bewijzen van de geldigheid van het model en het visualiseren van verschillende scenario's komen in dit onderzoek aan bod.
 
 ## Goal
-
 Het doel is nu voornamelijk om te bekijken wat er gebeurt met de grafieken als parameters verandert worden ( oftewel er moeten verschillende scenario's gerunt worden ). Ook zal de geldigheid van het model op de proef gesteld worden.
 
 ## Theory
