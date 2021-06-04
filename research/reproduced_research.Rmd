@@ -44,8 +44,11 @@ $${V{_m}}{_a}{_x}{_p}{_m}{_o}{_l} *CYP * MPPGL * W{_l}{_i} *MW * 60 / 10^9$$
 $${CLU{_i}}{_n}{_t}{_2}{_C}{_2}{_8} *FU{_m}{_i}{_c} * ISEF{_2}{_c}{_8}$$
 (3) - $$\frac{\frac{fu{_p}}{BP}*CLu{_i}{_n}{_t}*Q{_h}{_e}}{Q{_h}{_e}+{\frac{fu{_p}}{BP}*CLu{_i}{_n}{_t}}}$$
 
+For the Whole-body PBPK model the Michaelis-Menten enzyme kinetics served a great factor in the composition of the first equation. This equation calculates the values of the maximal rate of saturating substrate concentrations (Vmax) in [mg/h] for each CYPs isoform. CYPs are a group of enzymes that can break down foreign substances like drugs, that is also the reason why they are part of the equation. Some parameters were obtained by using another package called the simcyp simulator. The values gotten from that prediction will be used in equation 1.
 
-... This part is work in progress...
+The heart model contains two equations. 
+Firstly, the intrinsic clearance for each enzyme based on unbound fraction of compound will be calculated using given parameter values. To clarify, intrinsic clearance is the ability of the liver to remove drug in the absence of flow limitations and binding to cells or proteins in the blood. This is pretty important information because this process wil impact the drug concentration over time.
+Secondly, The 3rd equation will calculate the total heart metabolic clearance. The importance of this value is also quite clear, because the metabolic clearance is recognized as one of the main determinants of the blood concentration as well as volume. This is therefore used to help predict toxicokinetics.
 
 # Methods
 
