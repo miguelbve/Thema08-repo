@@ -36,7 +36,7 @@ This research aims to give a good understanding of the drug concentration over t
 In order to understand the model, the concept of a PBPK model needs to be clear. Simpy put, PBPK is a computer modeling approach that incorporates blood flow and tissue composition of organs to define the pharmacokinetics (PK) of drugs. Alterations in PK properties, such as, absorption, distribution, metabolism, and excretion, can have a substantial impact on achieving the desired therapeutic concentration of a drug. PBPK is a very powerful tool, so a lot of computing power is necessary. The best use for a PBPK model is drug research, which is the reason this type of model will be used in this research. It can also be, for instance, used by the Pharmaceutical Industry. The essention of integral calculations results in surface area of the graph, which is a useful application for dynamic models like the PBPK model.
 
 
-The equations which are part of the heart PBPK model are as follows:(UITLEG EQUATIONS)
+The equations which are part of the heart PBPK model are as follows:
 
 (1) - Vmax[mg/h] = Vmax_pmol x CYP x MPPGL x Wli x MW x 60 / 10^9
 $${V{_m}}{_a}{_x}{_p}{_m}{_o}{_l} *CYP * MPPGL * W{_l}{_i} *MW * 60 / 10^9$$
@@ -58,9 +58,52 @@ The tool used for this experiment is called deSolve. This is a R-package which c
 
 ... This part is work in progress...
 
-```{r}
-library(deSolve)
-# code
+```{r research_code}
+
+# Parameters to be used in the PBPK function
+parameters <- c(CLmHT =  0, KPmid = 7.4, Qpf = 0.01, KPendo = 14.0, KPpf = 2.6, Car = 100 / 0.0257, fup = 0.05, KPepi = 3, fupf = 0.05, P = 0.78, BP = 1.04, Qhe = 200, CLuint2C8 = 0.072, CLuint2C9 = 0.079, CLuint2J2 = 0, Vmax_pmol = 4, CYP = 10, Wli = 20.9, MW = 55.825, MPPGL = 45)
+
+
+PBPK_func <- function(t, y, parms) {
+    with(as.list(c(y, parms)),{
+      
+      Cendo = Aendo / 0.1974
+      Cmid = Amid / 0.0987
+      Cepi = Aepi / 0.0329
+      Cpf = Apf / 0.03
+      
+      dAepi_dt <- Qhe * (Car - (Cepi / KPepi) * BP) - 1/3 * CLmHT * Cepi * fup - P * (Cepi - fupf * Cpf)
+      
+      dAmid_dt <- Qhe * ((Cmid / KPmid) * BP - (Cendo / KPendo) * BP) - 1/3 * CLmHT * Cmid * fup
+      
+      dAendo_dt <- Qhe * ((Cmid / KPmid) * BP - (Cendo / KPendo) * BP) - 1/3 * CLmHT * Cmid * fup
+      
+      dApf_dt <- -P * (fup * Cpf - Cepi) + Qpf * (Car - (Cpf / KPpf) * BP)
+      
+      
+      
+      return(list(c(dAepi_dt, dAmid_dt, dAendo_dt, dApf_dt)))
+       }
+       )
+}
+
+# Set initial values
+state <- c(Aepi = 100, Amid = 100, Aendo = 100, Apf = 100)
+t <- seq(0, 30, by = 1)
+
+# Use the ode function from deSolve to create a line using our created function.
+# We use the method: "lsode" to get a smooth curve.
+out <- deSolve::ode(times = t, y = state, parms = parameters,
+                    func = PBPK_func, method = "lsoda")
+
+# Make a dataframe from the data of 'out'
+out <- as.data.frame(out)
+plot(out$time, out$Amid, type = "l", lwd = 3)
+plot(out$time, out$Aendo, type = "l", lwd = 3)
+plot(out$time, out$Aepi, type = "l", lwd = 3)
+plot(out$time, out$Apf, type = "l", lwd = 3)
+
+out
 ```
 
 ## Model configuration
