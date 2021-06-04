@@ -56,7 +56,10 @@ Secondly, The 3rd equation will calculate the total heart metabolic clearance. T
 
 The tool used for this experiment is called deSolve. This is a R-package which can help solve ODE, or ordinary differential equations. A few parameters were gotten from another research which used a program called: "Simcyp Simulator" to create a PBPK model. This model can predict certain values for tissues like the Kp which is pretty useful in this case. The research talked about just now has also used a package called FME, which performs a model fit based on algorithms. Equation 4 also plays a crucial role in this step.
 
-... This part is work in progress...
+```{r}
+knitr::include_graphics("derivative.png")
+```
+
 
 ```{r research_code}
 
