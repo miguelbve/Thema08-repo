@@ -34,7 +34,7 @@ This research aims to give a good understanding of the drug concentration over t
 ## Theory
 
 In order to understand the model, the concept of a PBPK model needs to be clear. Simpy put, PBPK is a computer modeling approach that incorporates blood flow and tissue composition of organs to define the pharmacokinetics (PK) of drugs. Alterations in PK properties, such as, absorption, distribution, metabolism, and excretion, can have a substantial impact on achieving the desired therapeutic concentration of a drug. PBPK is a very powerful tool, so a lot of computing power is necessary. The best use for a PBPK model is drug research, which is the reason this type of model will be used in this research. It can also be, for instance, used by the Pharmaceutical Industry. The essention of integral calculations results in surface area of the graph, which is a useful application for dynamic models like the PBPK model.
-
+J ... work in progress aanvullen ...
 
 The equations which are part of the heart PBPK model are as follows:
 
@@ -99,7 +99,7 @@ t_2 <- seq(100, 200, by = 1)
 out <- deSolve::ode(times = t, y = state, parms = parameters,
                     func = PBPK_func, method = "lsoda")
 
-out_2 <- deSolve::ode(times = t_2, y=out[length(t),2:5], parms = parameters_2,
+out2 <- deSolve::ode(times = t_2, y=out[length(t),2:5], parms = parameters_2,
                     func = PBPK_func, method = "lsoda")
 
 
@@ -120,7 +120,7 @@ out
 ## Model configuration
 
 Chosen parameter- and initial values can be found in the tables below. Do please note that each table corresponds to their own model respectively. 
-
+J
 ... This part is work in progress...
 
 # Results
@@ -130,22 +130,24 @@ print("Hier komt die code!")
 #plot(out)
 #code to generate figures with title, subscripts, legenda etc
 ```
-
+M
 - Describe what can be seen in such way that it leads to an answer to your research questions
 - Give your figures a number and a descriptive title.
 - Provide correct axis labels (unit and quantity), legend and caption.
 - Always refer to and discuss your figures and tables in the text - they never stand alone.
-
 
 # Discussion and Conclusion
 ## Discussion
 - Compare your results with what is expecting from the literature and discuss differences with them.
 - Discuss striking and surprising results.
 - Discuss weaknesses in your research and how they could be addressed.
+... This part is work in progress...
+M
 
 ## General conclusion and perspective
 Discuss what your goal was, what the end result is and how you could continue working from here.
-
+... This part is work in progress...
+M
 
 \begin{thebibliography}{9}
 
