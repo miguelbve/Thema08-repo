@@ -87,7 +87,7 @@ t_2 <- seq(100, 200, by = 1)
 The four final equations that were used to calculate the drug concentration over time can be seen in this image:
 
 ```{r deratives}
-knitr::include_graphics("derivative.png")
+# knitr::include_graphics("derivative.png")
 ```
 
 Each equation calculates the C (amount of drug in blood in mg/L). To get the C for each tissue type, equation 6 needs to be used. Equation 6 states that C can be calculated by dividing the volume (V) of the tissue (in L) by the amount of drugs (A) (in mg). epi stands for epicardium, mid for midmyocardium, endo for endocardium and pf for pericardial fluid. Three of the equations contain "* 1/3", this is because there are 3 tissue types so the CLmHT needs to be seperated by 3. The reason the dApf_dt is also calculated is because the Cpf value is also used in some of the other equations. Non-surprisingly the Qhe value, a.k.a. the amount of blood that passes the heart ( in L/h ), has a huge effect on the gradient of the chart because that has an effect on how fast the drug is broken down in the liver.
