@@ -51,17 +51,21 @@ The tool used for this experiment is called deSolve. This is a R-package which c
 ```{r research_code}
 
 # Parameters to be used in the PBPK function
-parameters <- c(CLuint = 10, KPmid = 7.4, Qpf = 0.01, KPendo = 14.0, KPpf = 2.6, Car = 3 / 0.0257, fup = 0.05, KPepi = 3, fupf = 0.05, P = 0.78, BP = 1.04, Qhe = 1, CLuint2C8 = 0.072, CLuint2C9 = 0.079, CLuint2J2 = 0, Vmax_pmol = 4, CYP = 10, Wli = 20.9, MW = 55.825, MPPGL = 45)
+parameters <- c(CLuint = 10, KPmid = 7.4, Qpf = 0.01, KPendo = 14.0, KPpf = 2.6, Car = 3 / 0.0257, fup = 0.05, KPepi = 3, fupf = 0.05, P = 0.78, BP = 1.04, Qhe = 1, CLuint2C8 = 0.072, CLuint2C9 = 0.079, CLuint2J2 = 0, Vmax_pmol = 4, CYP = 10, Wli = 20.9, MW = 55.825, MPPGL = 45, Whe = 225, CLint2C8_per_pmol = 0.072, CYP2C8 = 0.2, ISEF2C8 = 1, fumic = 1)
 
 
 PBPK_func <- function(t, y, parms) {
     with(as.list(c(y, parms)),{
       
+      CLint2C8_per_mg = CLint2C8_per_pmol / CYP2C8
+      CLint2C8 = CLint2C8_per_mg * Whe * 60
+      CLuint2C8 = CLint2C8 * fumic * ISEF2C8
+      
       CLmHT = (((fup / BP) * CLuint * Qhe) / Qhe + (fup / BP) * CLuint)
       
-      dAepi_dt <- 0.2 * (Car - (Cepi / Cpf) * BP) - 1/3 * CLmHT * Cepi * 0.05 - 0.78 * (Cepi - 0.05 * Cpf)
+      dAepi_dt <- 0.05 * (Car - (Cepi / Cpf) * BP) - 1/3 * CLmHT * Cepi * 0.05 - 0.78 * (Cepi - 0.05 * Cpf)
       
-      dAmid_dt <- 0.1 * ((Cmid / KPmid) * BP - (Cendo / KPendo) * BP) - 1/3 * CLmHT * Cmid * fup
+      dAmid_dt <- 0.3 * ((Cmid / KPmid) * BP - (Cendo / KPendo) * BP) - 1/3 * CLmHT * Cmid * fup
       
       dAendo_dt <- 1 * ((Cmid / KPmid) * BP - (Cendo / KPendo) * BP) - 1/3 * CLmHT * Cmid * fup
       
@@ -98,9 +102,9 @@ out <- deSolve::ode(times = t, y = state, parms = parameters,
 
 # Make a dataframe from the data of 'out'
 out <- as.data.frame(out)
-plot(out$time, out$Cendo, type = "l", lwd = 3, xlim=c(0,300))
-plot(out$time, out$Cmid, type = "l", lwd = 3, xlim=c(0,300))
-plot(out$time, out$Cepi, type = "l", lwd = 3, xlim=c(0,300))
+plot(out$time, out$Cendo, type = "l", lwd = 3, xlim=c(0,300), xlab = "Time in hours", ylab = "Drug concentration in [mg/L]", main = "Graph 1 ( C-endo )")
+plot(out$time, out$Cmid, type = "l", lwd = 3, xlim=c(0,300), xlab = "Time in hours", ylab = "Drug concentration in [mg/L]", main = "Graph 2 ( C-mid )")
+plot(out$time, out$Cepi, type = "l", lwd = 3, xlim=c(0,300), xlab = "Time in hours", ylab = "Drug concentration in [mg/L]", main = "Graph 3 ( C-epi )")
 
 ```
 
