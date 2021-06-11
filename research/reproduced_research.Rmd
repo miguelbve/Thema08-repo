@@ -1,6 +1,6 @@
 ---
-title: "Final Report"
-author: "Jurrien de Jong en Miguel Botter van Elburg"
+title: "Cardiac drug efficacy model"
+author: "Miguel Botter van Elburg & Jurrien de Jong"
 date: "`r Sys.Date()`"
 
 header-includes:
@@ -31,38 +31,170 @@ This research aims to give a good understanding of the drug concentration over t
 In order to understand the model, the concept of a PBPK model needs to be clear. Simpy put, PBPK is a computer modeling approach that incorporates blood flow and tissue composition of organs to define the pharmacokinetics (PK) of drugs. Alterations in PK properties, such as, absorption, distribution, metabolism, and excretion, can have a substantial impact on achieving the desired therapeutic concentration of a drug. PBPK is a very powerful tool, so a lot of computing power is necessary. The best use for a PBPK model is drug research, which is the reason this type of model will be used in this research. It can also be, for instance, used by the Pharmaceutical Industry. The essention of integral calculations results in surface area of the graph, which is a useful application for dynamic models like the PBPK model.
 
 The equations which are part of the heart PBPK model are as follows:
-(1) - Vmax[mg/h] = Vmax_pmol x CYP x MPPGL x Wli x MW x 60 / 10^9
-$${V{_m}}{_a}{_x}{_p}{_m}{_o}{_l} *CYP * MPPGL * W{_l}{_i} *MW * 60 / 10^9$$
-(2) - CLu int2C8 = Cl int2C8 x fumic x ISEF2C8
-$${CLU{_i}}{_n}{_t}{_2}{_C}{_2}{_8} *FU{_m}{_i}{_c} * ISEF{_2}{_c}{_8}$$
-(3) - $$\frac{\frac{fu{_p}}{BP}*CLu{_i}{_n}{_t}*Q{_h}{_e}}{Q{_h}{_e}+{\frac{fu{_p}}{BP}*CLu{_i}{_n}{_t}}}$$
 
 For the Whole-body PBPK model the Michaelis-Menten enzyme kinetics served a great factor in the composition of the first equation. This equation calculates the values of the maximal rate of saturating substrate concentrations (Vmax) in [mg/h] for each CYPs isoform. CYPs are a group of enzymes that can break down foreign substances like drugs, that is also the reason why they are part of the equation. Some parameters were obtained by using another package called the simcyp simulator. The values gotten from that prediction will be used in equation 1.
+ 
+$$V_{max}[mg/h] = V_{max\_pmol} \times CYP \times MPPGL \times W_{li} \times \frac{60}{10^9}\hspace{1cm}(1)$$
 
 The heart model contains two equations. 
 Firstly, the intrinsic clearance for each enzyme based on unbound fraction of compound will be calculated using given parameter values. To clarify, intrinsic clearance is the ability of the liver to remove drug in the absence of flow limitations and binding to cells or proteins in the blood. This is pretty important information because this process wil impact the drug concentration over time.
+
+$$CL_{int 2C8\_per\_mg} = \frac{CL_{int 2C8\_per\_pmol}}{CYP2C8}\hspace{1cm}(2a)$$
+$$CL_{int 2C8} = CL_{int 2C8\_per\_mg} \times W_{he} \times 60\hspace{1cm}(2b)$$
+$$CLu_{int 2C8} = CL_{int 2C8} \times fu_{mic} \times ISEF_{2C8}\hspace{1cm}(2c)$$
 Secondly, The 3rd equation will calculate the total heart metabolic clearance. The importance of this value is also quite clear, because the metabolic clearance is recognized as one of the main determinants of the blood concentration as well as volume. This is therefore used to help predict toxicokinetics.
+
+$$CLu_{int} = CLu_{int 2C8} + CLu_{int2C9} + CLu_{2J2}\hspace{1cm}(3a)$$
+
+$$CLm_{HT} = \frac{\frac{fu_{p}}{BP} \times CLu_{int} \times Q_{he}}{Q_{he} + \frac{fu_{p}}{BP} \times CLu_{int}}\hspace{1cm}(3b)$$
 
 # Methods
 ## The software model
 
 The tool used for this experiment is called deSolve. This is a R-package which can help solve ODE, or ordinary differential equations. A few parameters were gotten from another research which used a program called: "Simcyp Simulator" to create a PBPK model. This model can predict certain values for tissues like the Kp which is pretty useful in this case. The research talked about just now has also used a package called FME, which performs a model fit based on algorithms. Equation 4 also plays a crucial role in this step.
 
-```{r research_code}
+## Model configuration
+The four final equations that were used to calculate the drug concentration over time can be seen here:
+
+$$\frac{dA_{epi}}{dt} = Q_{he} \times (C_{ar} - \frac{C_{epi}}{Kp_{epi}} \times BP) - 1/3 \times CLm_{HT} \times C_{epi} \times fu_{p} - P \times (C_{epi}-fu_{pf} \times C_{pf})\hspace{1cm}(4a)$$
+$$\frac{dA_{mid}}{dt} = Q_{he} \times (\frac{C_{mid}}{Kp_{mid}} \times BP - \frac{C_{endo}}{Kp_{endo}} \times BP) - 1/3 \times CLm_{HT} \times C_{mid} \times fu_{p}\hspace{1cm}(4b)$$
+$$\frac{dA_{endo}}{dt} = Q_{he} \times (\frac{C_{mid}}{Kp_{mid}} \times BP - \frac{C_{endo}}{Kp_{endo}} \times BP) - 1/3 \times CLm_{HT} \times C_{mid} \times fu_{p}\hspace{1cm}(4c)$$
+$$\frac{dA_{pf}}{dt} = -P \times (fu_{pf}\times C_{pf} - C_{epi}) + Q_{pf} \times (C_{ar}-\frac{C_{pf}}{Kp_{pf}} \times BP)\hspace{1cm}(4d)$$
+
+Each equation calculates the C (amount of drug in blood in mg/L). To get the C for each tissue type, equation 6 needs to be used. Equation 6 states that C can be calculated by dividing the volume (V) of the tissue (in L) by the amount of drugs (A) (in mg). epi stands for epicardium, mid for midmyocardium, endo for endocardium and pf for pericardial fluid. Three of the equations contain "* 1/3", this is because there are 3 tissue types so the CLmHT needs to be separated by 3. The reason the dApf_dt is also calculated is because the Cpf value is also used in some of the other equations. Non-surprisingly the Qhe value, a.k.a. the amount of blood that passes the heart ( in L/h ), has a huge effect on the gradient of the chart because that has an effect on how fast the drug is broken down in the liver.
+
+# Results
+The structure representing the simulation of the PBPK model is shown here.
+
+```{r research_code_echo, echo = FALSE}
 
 # Parameters to be used in the PBPK function
-parameters <- c(CLuint = 10, KPmid = 7.4, Qpf = 0.01, KPendo = 14.0, KPpf = 2.6, Car = 3 / 0.0257, fup = 0.05, KPepi = 3, fupf = 0.05, P = 0.78, BP = 1.04, Qhe = 1, CLuint2C8 = 0.072, CLuint2C9 = 0.079, CLuint2J2 = 0, Vmax_pmol = 4, CYP = 10, Wli = 20.9, MW = 55.825, MPPGL = 45, Whe = 225, CLint2C8_per_pmol = 0.072, CYP2C8 = 0.2, ISEF2C8 = 1, fumic = 1)
+parameters <- c(KPmid = 7.4,
+                Qpf = 0.01,
+                KPendo = 14.0,
+                KPpf = 2.6,
+                Car = 3 / 0.0257,
+                fup = 0.05,
+                KPepi = 3,
+                fupf = 0.05,
+                P = 0.78,
+                BP = 1.04,
+                Qhe = 1,
+                CLuint2C9 = 0.079,
+                CLuint2J2 = 0,
+                CLuint = 4,
+                CYP = 10,
+                Wli = 20.9,
+                MW = 55.825,
+                MPPGL = 45,
+                Whe = 225,
+                CLint2C8_per_pmol = 0.072,
+                CYP2C8 = 0.2,
+                ISEF2C8 = 1,
+                fumic = 1)
 
 
 PBPK_func <- function(t, y, parms) {
     with(as.list(c(y, parms)),{
       
+      #Equations 2A,B and C
       CLint2C8_per_mg = CLint2C8_per_pmol / CYP2C8
       CLint2C8 = CLint2C8_per_mg * Whe * 60
-      CLuint2C8 = CLint2C8 * fumic * ISEF2C8
+      CLuint2C9 = CLint2C8 * fumic * ISEF2C8
       
+      #Equations 3A and B
       CLmHT = (((fup / BP) * CLuint * Qhe) / Qhe + (fup / BP) * CLuint)
       
+      #Equations 4A,B,C and D
+      dAepi_dt <- 0.01 * (Car - (Cepi / Cpf) * BP) - 1/3 * CLmHT * Cepi * 0.05 - 0.78 * (Cepi - 0.05 * Cpf)
+      
+      dAmid_dt <- 0.2 * ((Cmid / KPmid) * BP - (Cendo / KPendo) * BP) - 1/3 * CLmHT * Cmid * fup
+      
+      dAendo_dt <- 0.8 * ((Cmid / KPmid) * BP - (Cendo / KPendo) * BP) - 1/3 * CLmHT * Cmid * fup
+      
+      dApf_dt <- -P * (fup * Cpf - Cepi) + Qpf * (Car - (Cpf / KPpf) * BP)
+      
+      
+      
+      return(list(c(dAepi_dt, dAmid_dt, dAendo_dt, dApf_dt)))
+       }
+       )
+}
+
+# Set initial values
+state <- c(Cepi = 1, Cmid = 1, Cendo = 1, Cpf = 1)
+t <- seq(0, 1000, by = 1)
+```
+
+```{r, echo = FALSE}
+# Use the ode function from deSolve to create a line using our created function.
+# We use the method: "lsode" to get a smooth curve.
+out <- deSolve::ode(times = t, y = state, parms = parameters,
+                    func = PBPK_func, method = "lsoda")
+
+# Place figures in a nice square
+par(mfrow = c(2,2) )
+
+# Make a dataframe from the data of 'out'
+out <- as.data.frame(out)
+plot(out$time, out$Cendo, type = "l", lwd = 3, xlim=c(0,500), xlab = "Time in hours", ylab = "Drug concentration in [mg/L]", main = "Graph 1 ( C-endo )")
+plot(out$time, out$Cmid, type = "l", lwd = 3, xlim=c(0,500), xlab = "Time in hours", ylab = "Drug concentration in [mg/L]", main = "Graph 2 ( C-mid )")
+plot(out$time, out$Cepi, type = "l", lwd = 3, xlim=c(0,1000), xlab = "Time in hours", ylab = "Drug concentration in [mg/L]", main = "Graph 3 ( C-epi )")
+
+```
+
+Three graphs have been created that show the drug concentration (in mg/L) over time. Each of the graphs shows a different type of tissue of the heart. The first two graphs almost show the exact same curve, but the first one has a higher peak, this is probably due to the tissue type having more blood flow through it. The steady-state is reached at around 500 hours for the first and second graph while the 3rd graph shows a very different curve. It seems the 3rd graph does not correspond to the other research while the first two have some similarities having a maximum drug in blood concentration at first and declining afterward (broken down over time). The third graph looks like the exact opposite of what should be the gradient, because it represents a decreasing rising line. The reason for this remains unclear, but looking at the formula it probably depends on certain key parameters.
+
+# Discussion and Conclusion
+## Discussion
+Surprisingly the first graph (The time-amount of the amitriptyline profile) resulted from fitting the model to values measured from the original report equals the first plot from the findings in this research. Although those are fits, it confirms/validates the original report in some extent, since the model is based on the equation which can be found in the chapter 'The software model'. Nevertheless some knowledge shortcomings about the library deSolve and the underlying theory inaccuracy. However, direct measurements may cause problems, and prognoses remains challenging. Because PBPK modeling makes predicting tissue concentration-time profiles possible, we rebuilt on cardiac tissue and applied a PBPK quantitative mechanistic framework to reconstruct the heart model structure.
+
+## General conclusion and perspective
+Concluded, the tissue type does seem like making a difference on the drug concentration over time, this can be argued by the fact that the graphs show a different decay over time for each heart tissue type. But there needs to be done more research to truly prove that tissue type is a great factor because there are much more factors involved which were not considered, like which organism is examined and possible cardiac problems. The development of a four-compartmental heart model has been described and its settled into a whole-body PBPK model. The model integrated literature-derived data on cardiac knowledge and was used to predict amitriptyline concentration in venous plasma, epicardium, midmyocardium, endocardium, and pericardial fluid. The PBPK heart sub-model requires further improvement, but it represents as well as possible attempt to provide an active drug concentration in various nestings within heart tissue with the use of a PBPK approach.
+
+
+# Appendix A: Code
+
+```{r research_code}
+
+# Parameters to be used in the PBPK function
+parameters <- c(KPmid = 7.4,
+                Qpf = 0.01,
+                KPendo = 14.0,
+                KPpf = 2.6,
+                Car = 3 / 0.0257,
+                fup = 0.05,
+                KPepi = 3,
+                fupf = 0.05,
+                P = 0.78,
+                BP = 1.04,
+                Qhe = 1,
+                CLuint2C9 = 0.079,
+                CLuint2J2 = 0,
+                CLuint = 4,
+                CYP = 10,
+                Wli = 20.9,
+                MW = 55.825,
+                MPPGL = 45,
+                Whe = 225,
+                CLint2C8_per_pmol = 0.072,
+                CYP2C8 = 0.2,
+                ISEF2C8 = 1,
+                fumic = 1)
+
+
+PBPK_func <- function(t, y, parms) {
+    with(as.list(c(y, parms)),{
+      
+      #Equations 2A,B and C
+      CLint2C8_per_mg = CLint2C8_per_pmol / CYP2C8
+      CLint2C8 = CLint2C8_per_mg * Whe * 60
+      CLuint2C9 = CLint2C8 * fumic * ISEF2C8
+      
+      #Equations 3A and B
+      CLmHT = (((fup / BP) * CLuint * Qhe) / Qhe + (fup / BP) * CLuint)
+      
+      #Equations 4A,B,C and D
       dAepi_dt <- 0.05 * (Car - (Cepi / Cpf) * BP) - 1/3 * CLmHT * Cepi * 0.05 - 0.78 * (Cepi - 0.05 * Cpf)
       
       dAmid_dt <- 0.3 * ((Cmid / KPmid) * BP - (Cendo / KPendo) * BP) - 1/3 * CLmHT * Cmid * fup
@@ -81,39 +213,6 @@ PBPK_func <- function(t, y, parms) {
 # Set initial values
 state <- c(Cepi = 1, Cmid = 1, Cendo = 1, Cpf = 1)
 t <- seq(0, 300, by = 1)
-```
 
-## Model configuration
-The four final equations that were used to calculate the drug concentration over time can be seen in this image:
-
-```{r deratives}
-knitr::include_graphics("derivative.png")
-```
-
-Each equation calculates the C (amount of drug in blood in mg/L). To get the C for each tissue type, equation 6 needs to be used. Equation 6 states that C can be calculated by dividing the volume (V) of the tissue (in L) by the amount of drugs (A) (in mg). epi stands for epicardium, mid for midmyocardium, endo for endocardium and pf for pericardial fluid. Three of the equations contain "* 1/3", this is because there are 3 tissue types so the CLmHT needs to be seperated by 3. The reason the dApf_dt is also calculated is because the Cpf value is also used in some of the other equations. Non-surprisingly the Qhe value, a.k.a. the amount of blood that passes the heart ( in L/h ), has a huge effect on the gradient of the chart because that has an effect on how fast the drug is broken down in the liver.
-
-# Results
-The structure representing the simulation of the PBPK model is shown here.
-```{r}
-# Use the ode function from deSolve to create a line using our created function.
-# We use the method: "lsode" to get a smooth curve.
-out <- deSolve::ode(times = t, y = state, parms = parameters,
-                    func = PBPK_func, method = "lsoda")
-
-# Make a dataframe from the data of 'out'
-out <- as.data.frame(out)
-plot(out$time, out$Cendo, type = "l", lwd = 3, xlim=c(0,300), xlab = "Time in hours", ylab = "Drug concentration in [mg/L]", main = "Graph 1 ( C-endo )")
-plot(out$time, out$Cmid, type = "l", lwd = 3, xlim=c(0,300), xlab = "Time in hours", ylab = "Drug concentration in [mg/L]", main = "Graph 2 ( C-mid )")
-plot(out$time, out$Cepi, type = "l", lwd = 3, xlim=c(0,300), xlab = "Time in hours", ylab = "Drug concentration in [mg/L]", main = "Graph 3 ( C-epi )")
 
 ```
-
-# Discussion and Conclusion
-## Discussion
-- Compare your results with what is expecting from the literature and discuss differences with them.
-- Discuss striking and surprising results.
-- Discuss weaknesses in your research and how they could be addressed.
-Suprisingly the first graph (The time-amount of the amitriptyline profile) resulted from fitting the model to values measured from the original report equals the first plot from the findings in this research. Although those are fits, it confirms/validates the original report in some extent, since the model is based on the equation which can be found in the chapter 'The software model'. Nevertheless some knowledge shortcomings about the library deSolve and the underlying theory inacuraccy. However, direct measurements may cause problems, and prognoses remains challenging. Because PBPK modeling makes predicting tissue concentration-time profiles possible, we rebuilt on cardiac tissue and applied a PBPK quantitative mechanistic framework to reconstructure the heart model structure.
-
-## General conclusion and perspective
-The described the development of a four-compartmental heart model has been described and its settled into a whole-body PBPK model. The model integrated literature-derived data on cardiac knolwedge and was used to predict amitriptyline concentration in venous plasma, epicardium, midmyocardium, endocardium, and pericardial fluid. The PBPK heart sub-model requires further improvement, but it represents as well as possible attempt to provide an active drug concentration in various nestings within heart tissue with the use of a PBPK approach.
