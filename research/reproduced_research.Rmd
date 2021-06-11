@@ -53,8 +53,6 @@ The tool used for this experiment is called deSolve. This is a R-package which c
 # Parameters to be used in the PBPK function
 parameters <- c(CLuint = 10, KPmid = 7.4, Qpf = 0.01, KPendo = 14.0, KPpf = 2.6, Car = 3 / 0.0257, fup = 0.05, KPepi = 3, fupf = 0.05, P = 0.78, BP = 1.04, Qhe = 1, CLuint2C8 = 0.072, CLuint2C9 = 0.079, CLuint2J2 = 0, Vmax_pmol = 4, CYP = 10, Wli = 20.9, MW = 55.825, MPPGL = 45)
 
-parameters_2 <- c(CLuint = 10, KPmid = 7.4, Qpf = 0.01, KPendo = 14.0, KPpf = 2.6, Car = 3 / 0.0257, fup = 0.05, KPepi = 3, fupf = 0.05, P = 0.78, BP = 1.04, Qhe = 1, CLuint2C8 = 0.072, CLuint2C9 = 0.079, CLuint2J2 = 0, Vmax_pmol = 4, CYP = 10, Wli = 20.9, MW = 55.825, MPPGL = 45)
-
 
 PBPK_func <- function(t, y, parms) {
     with(as.list(c(y, parms)),{
@@ -78,9 +76,7 @@ PBPK_func <- function(t, y, parms) {
 
 # Set initial values
 state <- c(Cepi = 1, Cmid = 1, Cendo = 1, Cpf = 1)
-t <- seq(0, 100, by = 1)
-t_2 <- seq(100, 200, by = 1)
-
+t <- seq(0, 300, by = 1)
 ```
 
 ## Model configuration
@@ -100,22 +96,12 @@ The structure representing the simulation of the PBPK model is shown here.
 out <- deSolve::ode(times = t, y = state, parms = parameters,
                     func = PBPK_func, method = "lsoda")
 
-out2 <- deSolve::ode(times = t_2, y=out[length(t),2:5], parms = parameters_2,
-                    func = PBPK_func, method = "lsoda")
-
-
-out2[,1] <- out2[,1]+t[length(t)]
-
-out <- rbind(out,out_2)
-
 # Make a dataframe from the data of 'out'
 out <- as.data.frame(out)
-plot(out$time, out$Cendo, type = "l", lwd = 3, xlim=c(0,200))
-plot(out$time, out$Cmid, type = "l", lwd = 3, xlim=c(0,200))
-plot(out$time, out$Cepi, type = "l", lwd = 3, xlim=c(0,200))
-plot(out$time, out$Cpf, type = "l", lwd = 3, xlim=c(0,200))
+plot(out$time, out$Cendo, type = "l", lwd = 3, xlim=c(0,300))
+plot(out$time, out$Cmid, type = "l", lwd = 3, xlim=c(0,300))
+plot(out$time, out$Cepi, type = "l", lwd = 3, xlim=c(0,300))
 
-out
 ```
 
 # Discussion and Conclusion
