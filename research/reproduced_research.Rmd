@@ -1,6 +1,6 @@
 ---
-title: "titel "
-author: "my_name"
+title: "Final Report"
+author: "Jurrien de Jong en Miguel Botter van Elburg"
 date: "`r Sys.Date()`"
 
 header-includes:
