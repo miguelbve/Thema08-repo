@@ -1,6 +1,6 @@
 ---
 title: "Cardiac drug efficacy model"
-author: "Miguel Botter van Elburg & Jurrien de Jong"
+author: "Miguel Botter van Elburg & Jurriën de Jong"
 date: "`r Sys.Date()`"
 
 header-includes:
