@@ -10,11 +10,13 @@ output:
     pdf_document:
       number_sections: yes
 linkcolor: blue
+bibliography: bibliography.bib
 ---
 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
 ```
 
 # Introduction
@@ -147,7 +149,7 @@ Three graphs have been created that show the drug concentration (in mg/L) over t
 
 # Discussion and Conclusion
 ## Discussion
-Surprisingly the first graph (The time-amount of the amitriptyline profile) resulted from fitting the model to values measured from the original report equals the first plot from the findings in this research. Although those are fits, it confirms/validates the original report in some extent, since the model is based on the equation which can be found in the chapter 'The software model'. Nevertheless some knowledge shortcomings about the library deSolve and the underlying theory inaccuracy. However, direct measurements may cause problems, and prognoses remains challenging. Because PBPK modeling makes predicting tissue concentration-time profiles possible, we rebuilt on cardiac tissue and applied a PBPK quantitative mechanistic framework to reconstruct the heart model structure.
+Surprisingly the first graph (The time-amount of the amitriptyline profile) resulted from fitting the model to values measured from the original report [@original_report] equals the first plot from the findings in this research. Although those are fits, it confirms/validates the original report in some extent, since the model is based on the equation which can be found in the chapter 'The software model'. Nevertheless some knowledge shortcomings about the library deSolve and the underlying theory inaccuracy. However, direct measurements may cause problems, and prognoses remains challenging. Because PBPK modeling makes predicting tissue concentration-time profiles possible, we rebuilt on cardiac tissue and applied a PBPK quantitative mechanistic framework to reconstruct the heart model structure.
 
 ## General conclusion and perspective
 Concluded, the tissue type does seem like making a difference on the drug concentration over time, this can be argued by the fact that the graphs show a different decay over time for each heart tissue type. But there needs to be done more research to truly prove that tissue type is a great factor because there are much more factors involved which were not considered, like which organism is examined and possible cardiac problems. The development of a four-compartmental heart model has been described and its settled into a whole-body PBPK model. The model integrated literature-derived data on cardiac knowledge and was used to predict amitriptyline concentration in venous plasma, epicardium, midmyocardium, endocardium, and pericardial fluid. The PBPK heart sub-model requires further improvement, but it represents as well as possible attempt to provide an active drug concentration in various nestings within heart tissue with the use of a PBPK approach.
