@@ -20,8 +20,6 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
 ```
 
 # Introduction
-Introduction of the research and introduction research questions
-
 The effect of plasma concentration should be related to the concentration of the test substance (so it implies the delayed ventricular regulation). The concentration of the test substance is highly effected by the extent of the delayed ventricular repolarization. Since the plasma concentration is most commonly used as the effective concentration. This research is interested in the mean concentration from drug where it meet cardiac ion channels within heart tissue.
 
 Drug concentration in heart tissue should be of particular interest regarding all possible sites where the drug might meet cardiac ion channels.

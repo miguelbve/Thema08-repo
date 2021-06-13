@@ -126,7 +126,7 @@ Then the file research is converted to a file in pdf format and you should be re
 
 Support
 =======
-for questions about our ', you're able to contact us via mail.
+for questions about our project, you're able to contact us via mail:
 	*Jurriën ju.de.jong@st.hanze.nl	
 	*Miguel		l.m.a.botter.van.elburg@st.hanze.nl
 
